@@ -127,6 +127,39 @@ mutation deletePost($postId: ID!){
 }
 `
 
+const CREATE_COMMENT_MUTATION = gql`
+  mutation($postId: ID!, $body: String!) {
+    createComment(postId: $postId, body: $body) {
+      id
+      commentCount
+      comments {
+        id
+        body
+        createdAt
+        username
+      }
+    }
+  }
+`
+
+
+const DELETE_COMMENT_MUTATION = gql`
+mutation deleteComment(
+  $postId:ID!, $commentId:ID!){
+    deleteComment(
+      postId: $postId, commentId: $commentId){
+        id
+        commentCount
+        comments {
+          id
+          body
+          createdAt
+          username
+          }
+      }
+  }
+`
+
 export { REGISTER_USER, LOGIN_USER, CREATE_POST_MUTATION, 
   GET_POSTS_QUERY, GET_POST_QUERY, LIKE_POST_MUTATION,
-  DELETE_POST_MUTATION}
+  DELETE_POST_MUTATION, CREATE_COMMENT_MUTATION, DELETE_COMMENT_MUTATION}

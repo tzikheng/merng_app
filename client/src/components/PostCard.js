@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import moment from 'moment'
 import { AuthContext } from '../context/auth'
-import { Button, Card, Icon, Image } from 'semantic-ui-react'
+import { Card, Image } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import ButtonWithCount from './ButtonWithCount'
 import DeleteButton from './DeleteButton'

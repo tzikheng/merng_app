@@ -54,8 +54,8 @@ module.exports = gql`
     likePost(postId: ID!): Post! #toggle
     deleteAllPosts: String
 
-    createComment(postId: String!, body: String!): Post!
-    deleteComment(postId: String!, commentId: ID!): Post!
+    createComment(postId: ID!, body: String!): Post!
+    deleteComment(postId: ID!, commentId: ID!): Post!
   } 
   # type Subscription{
   #   # TODO: implement user_id based subscription
