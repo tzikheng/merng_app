@@ -67,9 +67,9 @@ function SinglePost(props){
                     <ButtonWithCount icon='comments' count={commentCount} redirect={user?'':'/login'}
                       // onClick={()=>console.log('Comment on post')} TODO: click to enter comment box
                     />
-                      {user && user.username === username && (
-                        <DeleteButton postId={id} callback={deletePostCallback}/>
-                      )}
+                    {user && user.username === username && (
+                      <DeleteButton postId={id} callback={deletePostCallback}/>
+                    )}
                   </Card.Content>
                 </Card>
 
