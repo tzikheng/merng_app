@@ -1,12 +1,12 @@
 import React, { useContext, useState, useRef } from 'react'
 import moment from 'moment'
-import { Button, Card, Form, Grid, Icon, Image, Label, Transition } from 'semantic-ui-react'
+import { Card, Form, Grid, Image, Transition } from 'semantic-ui-react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { AuthContext } from '../context/auth'
-import { GET_POST_QUERY, CREATE_COMMENT_MUTATION, DELETE_COMMENT_MUTATION } from '../utility/graphql.js'
+import { GET_POST_QUERY, CREATE_COMMENT_MUTATION } from '../utility/graphql.js'
 import DeleteButton from '../components/DeleteButton'
 import LikeButton from '../components/LikeButton'
-import ButtonWithCount from '../components/ButtonWithCount'
+import CommentButton from '../components/CommentButton'
 
 function SinglePost(props){
   const postId = props.match.params.postId;
@@ -47,14 +47,14 @@ function SinglePost(props){
         <Grid centered>
           <Grid.Row>
 
-            <Grid.Column width={2} horizontalAlign="middle">
+            <Grid.Column width={2}>
               <Image
                 src='https://react.semantic-ui.com/images/avatar/large/molly.png'
                 size='small'
                 float='right'/>
               </Grid.Column>
 
-              <Grid.Column width={10} horizontalAlign="middle">
+              <Grid.Column width={10}>
                 <Card fluid style={{minHeight: 170}}>
                   <Card.Content>
                     <Card.Header>{username}</Card.Header>
@@ -64,12 +64,16 @@ function SinglePost(props){
                   
                   <Card.Content extra>
                     <LikeButton post={{ id, likeCount, likes }}/>
-                    <ButtonWithCount icon='comments' count={commentCount} redirect={user?'':'/login'}
+                    <CommentButton 
+                      commentCount={commentCount} 
+                      popUp = {user?'Comments':'Log in to comment'} 
+                      redirect={user?'':'/login'}
                       // onClick={()=>console.log('Comment on post')} TODO: click to enter comment box
                     />
                     {user && user.username === username && (
                       <DeleteButton postId={id} callback={deletePostCallback}/>
                     )}
+                      
                   </Card.Content>
                 </Card>
 
@@ -101,7 +105,7 @@ function SinglePost(props){
                     {comments.map((comment) => (
                       <Card fluid key={comment.id}>
                         <Card.Content>
-                          {user.username === comment.username && (
+                          {user && user.username === comment.username && (
                             <DeleteButton postId={id} commentId={comment.id} />
                           )}
                           <Card.Header>{comment.username}</Card.Header>

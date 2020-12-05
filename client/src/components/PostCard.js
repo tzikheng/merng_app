@@ -3,12 +3,12 @@ import moment from 'moment'
 import { AuthContext } from '../context/auth'
 import { Card, Image } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import ButtonWithCount from './ButtonWithCount'
+import CommentButton from './CommentButton'
 import DeleteButton from './DeleteButton'
 import LikeButton from './LikeButton'
 
 function PostCard({
-  post: {id, username, body, createdAt, likeCount, likes, commentCount, comments}
+  post: {id, username, body, createdAt, likeCount, likes, commentCount}
   }){
   const { user } = useContext(AuthContext)
   return (
@@ -29,7 +29,7 @@ function PostCard({
       </Card.Content>
       <Card.Content extra>
         <LikeButton post={{ id, likeCount, likes }}/>
-        <ButtonWithCount icon='comments' count={commentCount} redirect={`/posts/${id}`}/>
+        <CommentButton commentCount={commentCount} popUp='Comments' redirect={`/posts/${id}`}/>
         {user && user.username===username && 
           <DeleteButton postId={id}/>
         }

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
-import { Button, Icon, Label } from 'semantic-ui-react'
+import { Button, Icon, Label, Popup } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { LIKE_POST_MUTATION } from '../utility/graphql.js'
 import { AuthContext } from '../context/auth'
@@ -35,13 +35,25 @@ const likeButton = user ? (
   </Button>
 );
 
+const popupContent = user ? (
+  liked ? ( 
+    'Unlike post'
+    ) : (
+      'Like post'
+      )
+  ) : (
+    'Log in to like post'
+  )
+
 return (
-  <Button as="div" labelPosition="right">
-    {likeButton}
-    <Label basic color="purple" pointing="left">
-      {likeCount}
-    </Label>
-  </Button>
+  <Popup inverted content={popupContent} trigger={
+    <Button as="div" labelPosition="right">
+      {likeButton}
+      <Label basic color="purple" pointing="left">
+        {likeCount}
+      </Label>
+    </Button>
+  }/>
 );
 }
 
