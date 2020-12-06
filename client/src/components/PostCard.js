@@ -12,7 +12,7 @@ function PostCard({
   }){
   const { user } = useContext(AuthContext)
   return (
-    <Card fluid style={{minHeight: 170}}>
+    <Card fluid style={{height: 170, width: 350, margin: 10}}>
       <Card.Content>
         <Image
           floated='right'
@@ -23,8 +23,8 @@ function PostCard({
         <Card.Meta as={Link} to={`/posts/${id}`}  style={{marginBottom:2}}>
           {moment(createdAt).fromNow()}
         </Card.Meta>
-        <Card.Description>
-          {body}
+        <Card.Description style={{wordWrap: 'break-word', height: 40, overflow: 'ellipsis'}}>
+          {body.length>70? body.substring(0,70)+'...':body}
         </Card.Description>
       </Card.Content>
       <Card.Content extra>

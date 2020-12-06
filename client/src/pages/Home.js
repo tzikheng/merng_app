@@ -1,10 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { Grid, Transition } from 'semantic-ui-react'
+import { Card, Grid, Transition } from 'semantic-ui-react'
 
 import PostForm from '../components/PostForm.js'
 import PostCard from '../components/PostCard.js'
-import { AuthContext } from '../context/auth.js'
 import { GET_POSTS_QUERY } from '../utility/graphql.js'
 
 function Home() {
@@ -23,23 +22,25 @@ function Home() {
   } else {
     const posts = data.getPosts //{user && ()}
     return (
-    <Grid columns={3}>
+    <Grid>
       <Grid.Row className='page-title'>
         <h1>{posts ? 'Recent posts' : 'No posts yet'}</h1>
       </Grid.Row>
       <Grid.Row>
+      <Card.Group centered>
         <Grid.Column>
           <PostForm/>
         </Grid.Column>
         {posts && (
           <Transition.Group>
             {posts.map((post)=>(
-              <Grid.Column key={post.id} style={{marginBottom:20}}>
+              <Grid.Column key={post.id}>
                 <PostCard post={post}/>
               </Grid.Column>
               ))}
             </Transition.Group>
               )}
+      </Card.Group>
       </Grid.Row>
     </Grid>
     );

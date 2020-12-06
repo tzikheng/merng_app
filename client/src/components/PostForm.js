@@ -29,7 +29,7 @@ function PostForm() {
   function createPostCallback(){createPost()}
   
   return (
-    <Card fluid style={{minHeight: 170}}>
+    <Card fluid style={{height: 170, width: 350, margin: 10}}>
       <Card.Content>
         <Card.Header>{user?'New Post:':'Log in to start sharing!'}</Card.Header>
         {user && (

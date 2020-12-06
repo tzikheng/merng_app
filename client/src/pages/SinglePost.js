@@ -59,7 +59,9 @@ function SinglePost(props){
                   <Card.Content>
                     <Card.Header>{username}</Card.Header>
                     <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
-                    <Card.Description>{body}</Card.Description>
+                    <Card.Description style={{wordWrap: 'break-word'}}>
+                      {body}
+                    </Card.Description>
                   </Card.Content>
                   
                   <Card.Content extra>
@@ -110,7 +112,9 @@ function SinglePost(props){
                           )}
                           <Card.Header>{comment.username}</Card.Header>
                           <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
-                          <Card.Description>{comment.body}</Card.Description>
+                          <Card.Description style={{wordWrap: 'break-word'}}>
+                            {comment.body}
+                          </Card.Description>
                         </Card.Content>
                       </Card>
                     ))}
