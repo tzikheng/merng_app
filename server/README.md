@@ -1,0 +1,1 @@
+# Basic MERN app with GraphQL, Apollo & Semantic UI

@@ -7,12 +7,12 @@ const resolvers = require('./graphql/resolvers') // import from index.js so no n
 
 const pubsub = new PubSub()
 
-const PORT = process.env.port || 5000
+const PORT = process.env.PORT || 5000
 
 const server = new ApolloServer({
   typeDefs, 
   resolvers,
-  context: ({req}) => ({ req, pubsub }) // wtf is going on
+  context: ({req}) => ({ req, pubsub }) // TODO:
 })
 
 mongoose
