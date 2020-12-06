@@ -1,5 +1,6 @@
 # Paths
 .eslintcache
+eslintcache
 package.json
 package-lock.json
 
