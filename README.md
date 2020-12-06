@@ -1,3 +1,3 @@
-# project_zero
+# MERNG App
 
 My first MERN App
