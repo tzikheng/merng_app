@@ -5,14 +5,12 @@ const { MONGODB } = require('./config.js')
 const typeDefs = require('./graphql/typeDefs.js')
 const resolvers = require('./graphql/resolvers') // import from index.js so no need to specify
 
-const pubsub = new PubSub()
-
 const PORT = process.env.PORT || 5000
 
 const server = new ApolloServer({
   typeDefs, 
   resolvers,
-  context: ({req}) => ({ req, pubsub }) // TODO:
+  context: ({req}) => ({ req })
 })
 
 mongoose

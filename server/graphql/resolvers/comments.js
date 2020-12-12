@@ -6,7 +6,7 @@ const checkAuth = require('../../utility/check-auth.js')
 module.exports = {
   Mutation: {
     createComment: async(_, { postId, body }, context) => {
-      const { username } = checkAuth(context)
+      const user = checkAuth(context)
       if(body.trim()===''){
         throw new UserInputError('Empty comment', {
           errors: {
@@ -18,7 +18,7 @@ module.exports = {
       if(post){
         post.comments.unshift({ // add to top
           body,
-          username,
+          user: user.id,
           createdAt: new Date().toISOString()
         })
         await post.save();
@@ -27,16 +27,20 @@ module.exports = {
     },
 
     async deleteComment(_, { postId, commentId}, context){
-      const { username } = checkAuth(context);
-      const post = await Post.findById(postId)
-      if(post){
-        const commentIndex = post.comments.findIndex(comment=>comment.id===commentId)
-        if(post.comments[commentIndex].username === username){
+      const user = checkAuth(context);
+      try{
+        const post = await Post.findById(postId)
+        commentIndex = post.comments.findIndex(comment=>comment.id===commentId)
+        if(post.comments[commentIndex].user.toString()===user.id){
           post.comments.splice(commentId,1)
           await post.save()
           return post
-        } else {throw new AuthenticationError('Action not allowed')}
-      } else {throw new UserInputError('Post not found')}
+        } else {
+        throw new AuthenticationError('Action not allowed')
+        }
+      } catch(err) {
+        throw new Error(err)
+      }
     }
   }
 }

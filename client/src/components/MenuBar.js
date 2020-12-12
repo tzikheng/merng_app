@@ -6,13 +6,14 @@ import { AuthContext } from '../context/auth';
 // export default class MenuExampleSecondaryPointing extends Component {
 function MenuBar(){
   const { user, logout } = useContext(AuthContext)
+  const color = localStorage.getItem('color') || 'black'
   const pathname = window.location.pathname;
   const path = pathname === '/' ? 'home' : pathname.substr(1) // if path ends '/' set home, else set /...
   const handleItemClick = (e, { name }) => setActiveItem(name)
   const [activeItem, setActiveItem] = useState(path) // starts here
 
   const menuBar = user ? (
-    <Menu pointing secondary size='massive' color='purple'>
+    <Menu pointing secondary size='massive' color={color}>
       <Menu.Item
         name={user.username}
         active
@@ -27,7 +28,7 @@ function MenuBar(){
       </Menu.Menu>
     </Menu>
   ) : (
-    <Menu pointing secondary size='massive' color='purple'>
+    <Menu pointing secondary size='massive' color={color}>
       <Menu.Item
         name='home'
         active={activeItem === 'home'}

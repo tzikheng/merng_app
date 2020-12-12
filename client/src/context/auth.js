@@ -34,10 +34,12 @@ function AuthProvider(props){
 
   function login(userData){
     localStorage.setItem('jwtToken', userData.token)
+    localStorage.setItem('color', userData.color)
     dispatch({type: 'LOGIN', payload: userData})
   }
   function logout(){
     localStorage.removeItem('jwtToken')
+    localStorage.removeItem('color')
     dispatch({type: 'LOGOUT'})
   }
 

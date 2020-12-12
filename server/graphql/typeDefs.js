@@ -8,30 +8,33 @@ module.exports = gql`
     token: String!
     username: String!
     createdAt: String!
+    color: String
+    bio: String
+    avatar: String
   }
   type Post{
     id: ID!
+    user: User!
     body: String!
-    # user_id: String!
-    username: String!
     createdAt: String!
-    comments: [Comment]!
+    # username: String!
+    comments: [Comment]
     commentCount: Int!
-    likes: [Like]!
+    likes: [Like]
     likeCount: Int!
   }
   type Comment{
     id: ID!
+    user: User!
     createdAt: String!
-    # user_id: String!
-    username: String!
     body: String!
+    # username: String!
   }
   type Like{
     id: ID!
     createdAt: String!
-    # user_id: String!
-    username: String!
+    user: User!
+    # username: String!
   }
   input registerInput{
     username: String!
@@ -40,8 +43,9 @@ module.exports = gql`
     email: String!
   }
   type Query{
+    getUser(userId: ID!): User
     getUsers: [User]
-    getPosts: [Post]
+    posts: [Post]
     getPost(postId: ID!): Post
   }
   type Mutation{
@@ -50,16 +54,16 @@ module.exports = gql`
     deleteAllUsers: String
     
     createPost(body: String!): Post!
+    likePost(postId: ID!): Post!
     deletePost(postId: ID!): String!
-    likePost(postId: ID!): Post! #toggle
     deleteAllPosts: String
 
     createComment(postId: ID!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
+    # TODO: likeComment(commentId: ID!): Comment
   } 
-  # type Subscription{
-  #   # TODO: implement user_id based subscription
-  #   newPost: Post!
-  # }
-
+  type Subscription{
+    # TODO: implement user_id based subscription
+    newPost: Post!
+  }
 `

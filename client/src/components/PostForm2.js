@@ -1,24 +1,31 @@
 import React, { useState, useContext } from 'react'
 import { useMutation } from '@apollo/react-hooks'
-import { Card, Form, Grid } from 'semantic-ui-react'
-import { CREATE_POST_MUTATION, GET_POSTS_QUERY} from '../utility/graphql.js'
+import { Button, Card, Form, Grid } from 'semantic-ui-react'
+import { useForm } from '../utility/hooks'
+import { CREATE_POST_MUTATION, GET_POSTS_QUERY } from '../utility/graphql.js'
 import { AuthContext } from '../context/auth.js'
 
-function PostForm() {
+function PostForm2() {
   const { user } = useContext(AuthContext)
   const color = localStorage.getItem('color') || 'black'
-  const [postInput, setPostInput] = useState('');
-  const [createPost, { loading }] = useMutation(CREATE_POST_MUTATION, {
-    variables: {body:postInput},
+  const [errors, setErrors] = useState({})
+  const { onChange, onSubmit, values } = useForm(createPostCallback,{
+    body:''
+  })
+  const [createPost, { error }] = useMutation(CREATE_POST_MUTATION,{
+    variables: values,
+    onError(error){
+      setErrors(error.graphQLErrors[0].extensions.exception.errors)
+    },
     update(proxy, result){
       const data = proxy.readQuery({query: GET_POSTS_QUERY})
       proxy.writeQuery({
         query: GET_POSTS_QUERY, 
         data:{posts: [result.data.createPost, ...data.posts]} // rewriting the ATTRIBUTE of the OBJECT data
       });
-      setPostInput('')
     }
-  });
+  })
+  function createPostCallback(){createPost()}
   
   return (
     <Card fluid color={color} style={{height: 170, width: 350, margin: 10}}>
@@ -26,24 +33,20 @@ function PostForm() {
         {user ? (
           <>
             <Card.Header>{'New Post'}</Card.Header>
-              <Form onSubmit={createPost}>
+              <Form onSubmit={onSubmit}>
                 <Form.Field>
                   <Form.Input id='FormInput'
-                    placeholder={'Share something!'}
+                    placeholder={error? 'Post cannot be blank!':'Share something!'}
                     name='body'
-                    value = {postInput}
-                    onChange={(event) => setPostInput(event.target.value)}
+                    onChange={onChange}
+                    value = {values.body}
+                    error = {error? true:false}
                     style={{marginTop:22, marginBottom:16}}
                     />
                 </Form.Field>
-                <button
-                  type="submit"
-                  className={`ui button ${color}`}
-                  disabled={postInput.trim() === '' || loading}
-                  onClick={createPost}
-                  >
-                  Post
-                </button>
+                <Button type='submit' color={color}>
+                  Submit
+                </Button>
               </Form>
           </>
         ) : (
@@ -62,4 +65,4 @@ function PostForm() {
   )
 }
 
-export default PostForm
+export default PostForm2

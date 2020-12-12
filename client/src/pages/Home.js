@@ -20,30 +20,29 @@ function Home() {
       </Grid>
     )
   } else {
-    const posts = data.getPosts //{user && ()}
-    return (
-    <Grid>
-      <Grid.Row className='page-title'>
-        <h1>{posts ? 'Recent posts' : 'No posts yet'}</h1>
-      </Grid.Row>
-      <Grid.Row>
-      <Card.Group centered>
-        <Grid.Column>
-          <PostForm/>
-        </Grid.Column>
-        {posts && (
-          <Transition.Group>
-            {posts.map((post)=>(
-              <Grid.Column key={post.id}>
-                <PostCard post={post}/>
-              </Grid.Column>
-              ))}
-            </Transition.Group>
-              )}
-      </Card.Group>
-      </Grid.Row>
-    </Grid>
-    );
+      return (
+      <Grid>
+        <Grid.Row className='page-title'>
+          <h1>{data.posts ? 'Recent posts' : 'No posts yet'}</h1>
+        </Grid.Row>
+        <Grid.Row>
+        <Card.Group centered>
+          <Grid.Column>
+            <PostForm/>
+          </Grid.Column>
+          {data.posts && (
+            <Transition.Group>
+              {data.posts.map((post)=>(
+                <Grid.Column key={post.id}>
+                  <PostCard post={post}/>
+                </Grid.Column>
+                ))}
+              </Transition.Group>
+                )}
+        </Card.Group>
+        </Grid.Row>
+      </Grid>
+      )
   }
 }
 
@@ -51,7 +50,7 @@ export default Home
 
 
 // Alternative logic/syntax for function Home()
-// const { loading, data : {getPosts: posts} } = useQuery(GET_POSTS_QUERY)
+// const { loading, data : {posts: posts} } = useQuery(GET_POSTS_QUERY)
   // if(!loading && !posts){
   //   return(
   //     <Grid columns={1}>
@@ -81,7 +80,7 @@ export default Home
 
   // const { loading, data } = useQuery(GET_POSTS_QUERY)
   // try {
-  //   const posts = data.getPosts
+  //   const posts = data.posts
   //   if(loading === false && !posts){
   //     return(
   //       <Grid columns={1}>

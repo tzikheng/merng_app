@@ -13,10 +13,10 @@ function DeleteButton({ postId, commentId, callback }){
       setConfirmOpen(false)
       if (!commentId){
         const data = proxy.readQuery({query: GET_POSTS_QUERY})
-        const remainingPosts = data.getPosts.filter(post => post.id !== postId)
+        const remainingPosts = data.posts.filter(post => post.id !== postId)
         proxy.writeQuery({ 
           query: GET_POSTS_QUERY,
-          data: {getPosts: remainingPosts}
+          data: {posts: remainingPosts}
         })
       }
       if(callback) callback()

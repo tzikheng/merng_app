@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { LIKE_POST_MUTATION } from '../utility/graphql.js'
 import { AuthContext } from '../context/auth'
 
-function LikeButton({ post: { id, likeCount, likes } }){
+function LikeButton({color, post: { id, likeCount, likes } }){
 const [liked, setLiked] = useState(false)
   const { user } = useContext(AuthContext)
 
@@ -21,16 +21,16 @@ const [liked, setLiked] = useState(false)
 
 const likeButton = user ? (
   liked ? (
-    <Button color="purple" onClick={likePost}>
+    <Button color={color} onClick={likePost}>
       <Icon name="heart" />
     </Button>
   ) : (
-    <Button color="purple" basic onClick={likePost}>
+    <Button color={color} basic onClick={likePost}>
       <Icon name="heart" />
     </Button>
   )
 ) : (
-  <Button color="purple" basic as={Link} to="/login">
+  <Button color={color} basic as={Link} to="/login">
     <Icon name="heart" />
   </Button>
 );
@@ -49,7 +49,7 @@ return (
   <Popup inverted content={popupContent} trigger={
     <Button as="div" labelPosition="right">
       {likeButton}
-      <Label basic color="purple" pointing="left">
+      <Label basic color={color} pointing="left">
         {likeCount}
       </Label>
     </Button>

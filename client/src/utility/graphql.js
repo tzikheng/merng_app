@@ -15,11 +15,14 @@ mutation register(
       confirmPassword: $confirmPassword
     }
   ){
-    id
-    email
-    username
+    avatar
+    bio
+    color
     createdAt
+    email
+    id
     token
+    username
   }
 }
 `
@@ -32,91 +35,85 @@ mutation login(
     login(
       username: $username
       password: $password
-      ){
-        id
-        email
-        username
-        token
-      }
+    ){
+      avatar
+      bio
+      color
+      createdAt
+      email
+      id
+      token
+      username
+    }
   }
+`
+
+const GET_USER_QUERY = gql`
+query($userId: ID!){
+  getUser(userId: $userId){
+    avatar
+    color
+    id
+  }
+}
 `
 
 const CREATE_POST_MUTATION = gql`
 mutation createPost($body: String!){
   createPost(body: $body){
-    id
     body
-    createdAt
-    username
-    likeCount
-    likes{
-      username
-      createdAt
-    }
     commentCount
-    comments{
-      id
-      body
-      username
-      createdAt
-    }
+    comments{body createdAt id user{avatar color id username}}
+    createdAt
+    id
+    likeCount
+    likes{id createdAt user{id username}}
+    user{avatar color id username}
   }
 }
 `
 
 const GET_POST_QUERY = gql`
-  query($postId: ID!){
-    getPost(postId: $postId){
-      id
-      body
-      createdAt
-      username
-      likeCount
-      likes{
-        username
-      }
-      commentCount
-      comments{
-        id
-        username
-        createdAt
-        body
-      }
-    }
+query($postId: ID!){
+  getPost(postId: $postId){
+    body
+    commentCount
+    comments{body createdAt id user{avatar color id username}}
+    createdAt
+    id
+    likeCount
+    likes{id createdAt user{id username}}
+    user{avatar color id username}
   }
+}
 `
 
 const GET_POSTS_QUERY = gql`
-  {
-    getPosts{
-      id
-      username
-      body
-      createdAt
-      likeCount
-      likes{
-        username
-      }
-      commentCount
-      comments{
-        id
-        username
-        createdAt
-        body
-      }
-    }
+{
+  posts{
+  body
+  commentCount
+  comments{body createdAt id user{avatar color id username}}
+  createdAt
+  id
+  likeCount
+  likes{id createdAt user{id username}}
+  user{id username avatar color}
   }
+}
 `
 
 const LIKE_POST_MUTATION = gql`
 mutation likePost($postId: ID!){
   likePost(postId: $postId){
+    body
+    commentCount
+    comments{body createdAt id user{avatar color id username}}
+    createdAt
     id
-    username
     likeCount
-    likes {
-      username
-    }
+    likes{id createdAt user{id username}}
+    user{id username avatar color}
   }
 }
 `
@@ -128,38 +125,36 @@ mutation deletePost($postId: ID!){
 `
 
 const CREATE_COMMENT_MUTATION = gql`
-  mutation($postId: ID!, $body: String!) {
-    createComment(postId: $postId, body: $body) {
-      id
-      commentCount
-      comments {
-        id
-        body
-        createdAt
-        username
-      }
-    }
+mutation($postId: ID!, $body: String!){
+  createComment(postId: $postId, body: $body){
+    body
+    commentCount
+    comments{body createdAt id user{avatar color id username}}
+    createdAt
+    id
+    likeCount
+    likes{id createdAt user{id username}}
+    user{id username avatar color}
   }
+}
 `
 
 
 const DELETE_COMMENT_MUTATION = gql`
-mutation deleteComment(
-  $postId:ID!, $commentId:ID!){
-    deleteComment(
-      postId: $postId, commentId: $commentId){
-        id
-        commentCount
-        comments {
-          id
-          body
-          createdAt
-          username
-          }
-      }
+mutation deleteComment($postId:ID!, $commentId:ID!){
+  deleteComment(postId: $postId,commentId: $commentId){
+    body
+    commentCount
+    comments{body createdAt id user{avatar color id username}}
+    createdAt
+    id
+    likeCount
+    likes{id createdAt user{id username}}
+    user{id username avatar color}
   }
+}
 `
 
-export { REGISTER_USER, LOGIN_USER, CREATE_POST_MUTATION, 
-  GET_POSTS_QUERY, GET_POST_QUERY, LIKE_POST_MUTATION,
-  DELETE_POST_MUTATION, CREATE_COMMENT_MUTATION, DELETE_COMMENT_MUTATION}
+export { REGISTER_USER, LOGIN_USER, GET_USER_QUERY,
+  CREATE_POST_MUTATION, GET_POST_QUERY, GET_POSTS_QUERY, DELETE_POST_MUTATION, 
+  LIKE_POST_MUTATION, CREATE_COMMENT_MUTATION, DELETE_COMMENT_MUTATION}

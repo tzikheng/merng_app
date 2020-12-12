@@ -7,31 +7,44 @@ import CommentButton from './CommentButton'
 import DeleteButton from './DeleteButton'
 import LikeButton from './LikeButton'
 
-function PostCard({
-  post: {id, username, body, createdAt, likeCount, likes, commentCount}
-  }){
+function PostCard({post}){
   const { user } = useContext(AuthContext)
   return (
-    <Card fluid style={{height: 170, width: 350, margin: 10}}>
+    <Card 
+      fluid 
+      color={post.user.color} 
+      style={{height: 170, width: 350, margin: 10}}>
       <Card.Content>
         <Image
           floated='right'
           size='mini'
-          src='https://react.semantic-ui.com/images/avatar/large/molly.png'
-        />
-        <Card.Header style={{marginBottom:2}}>{username}</Card.Header>
-        <Card.Meta as={Link} to={`/posts/${id}`}  style={{marginBottom:2}}>
-          {moment(createdAt).fromNow()}
+          src={post.user.avatar}
+          />
+        <Card.Header style={{marginBottom:2}}>{post.user.username}</Card.Header>
+        <Card.Meta as={Link} to={`/posts/${post.id}`}  style={{marginBottom:2}}>
+          {moment(post.createdAt).fromNow()}
         </Card.Meta>
         <Card.Description style={{wordWrap: 'break-word', height: 40, overflow: 'ellipsis'}}>
-          {body.length>70? body.substring(0,70)+'...':body}
+          {post.body.length>70? post.body.substring(0,70)+'...':post.body}
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <LikeButton post={{ id, likeCount, likes }}/>
-        <CommentButton commentCount={commentCount} popUp='Comments' redirect={`/posts/${id}`}/>
-        {user && user.username===username && 
-          <DeleteButton postId={id}/>
+        <LikeButton 
+          color={post.user.color} 
+          post={{
+            id:post.id, 
+            likeCount:post.likeCount, 
+            likes:post.likes
+          }}
+        />
+        <CommentButton 
+          color={post.user.color} 
+          commentCount={post.commentCount} 
+          popUp='Comments' 
+          redirect={`/posts/${post.id}`}
+        />
+        {user && user.username===post.user.username && 
+          <DeleteButton postId={post.id}/>
         }
       </Card.Content>
     </Card>
@@ -39,3 +52,17 @@ function PostCard({
 }
 
 export default PostCard;
+
+
+{/* <div className='ui link card' key={comment.id}>
+  <div className='content'>
+    {user && user.id === comment.user.id && (
+      <DeleteButton postId={post.id} commentId={comment.id} />
+    )}
+    <div className='header'>{comment.user.username}</div>
+    <div className='meta'>{moment(comment.createdAt).fromNow()}</div>
+    <div className='description' style={{wordWrap: 'break-word'}}>
+      {comment.body}
+    </div>
+  </div>
+</div> */}
