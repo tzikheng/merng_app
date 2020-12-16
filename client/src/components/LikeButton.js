@@ -6,11 +6,11 @@ import { LIKE_POST_MUTATION } from '../utility/graphql.js'
 import { AuthContext } from '../context/auth'
 
 function LikeButton({color, post: { id, likeCount, likes } }){
-const [liked, setLiked] = useState(false)
+  const [liked, setLiked] = useState(false)
   const { user } = useContext(AuthContext)
 
   useEffect(() => {
-    if (user && likes.find((like) => like.username === user.username)) {
+    if (user && likes.find((like) => like.user.id === user.id)) {
       setLiked(true);
     } else setLiked(false);
   }, [user, likes]);

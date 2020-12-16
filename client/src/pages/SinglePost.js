@@ -9,11 +9,11 @@ import LikeButton from '../components/LikeButton'
 import CommentButton from '../components/CommentButton'
 
 function SinglePost(props){
-  const postId = props.match.params.postId;
   const { user } = useContext(AuthContext)
+  const postId = props.match.params.postId;
   const color = localStorage.getItem('color')
-  const [comment, setComment] = useState('');
   const commentInputRef = useRef(null);
+  const [comment, setComment] = useState('');
   const [createComment, { loading: creatingComment }] = useMutation(CREATE_COMMENT_MUTATION, {
     variables: {postId: postId, body: comment},
     update() {

@@ -4,12 +4,13 @@ const { buildSchemaFromTypeDefinitions } = require('apollo-server')
 const { UserInputError } = require('apollo-server')
 
 const User = require('../../models/User.js')
+const checkAuth = require('../../utility/check-auth.js')
 const { SECRET_KEY } = require('../../config.js')
 const { validateRegisterInput, validateLoginInput } = require('../../utility/validators.js')
 
 function generateToken(user){
   return jwt.sign(
-    {id: user.id, email: user.email, username: user.username},
+    {id: user.id, avatar: user.avatar, bio: user.bio, color: user.color, username: user.username}, // removed email: user.email
     SECRET_KEY, 
     { expiresIn: '1h'})
 }
@@ -49,7 +50,7 @@ module.exports = {
       } else {
         password = await bcrypt.hash(password, 12)
         const newUser = new User({
-          avatar: 'https://react.semantic-ui.com/images/avatar/large/elyse.png',
+          avatar: 'https://semantic-ui.com/images/avatar2/large/elyse.png',
           bio: '',
           createdAt: new Date().toISOString(),
           color: 'orange',
@@ -91,6 +92,41 @@ module.exports = {
       const token = generateToken(user)
       return{
         ...user._doc, // where the document is stored ??
+        id: user._id,
+        avatar: user.avatar,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        color: user.color,
+        email: user.email,
+        token: token,
+        username: user.username,
+      }
+    },
+
+    async updateSettings(_, {settingsInput:{avatar, bio, color, username}}, context){
+      const this_user = checkAuth(context)
+      const user = await User.findById(this_user.id);
+      if (!username || username.length===0){
+        username=user.username
+      } else {
+        if (username !== user.username){
+          const existing_user = await User.findOne({ username })
+          if(existing_user){
+            throw new UserInputError('Username is taken', {
+              errors:{username: 'This username is taken'}
+            })
+          }
+        }
+      }
+      user.avatar = avatar||user.avatar,
+      user.bio = bio||user.bio,
+      user.color = color||user.color,
+      user.username = username
+      await user.save()
+
+      const token = generateToken(user)
+      return{
+        ...user._doc,
         id: user._id,
         avatar: user.avatar,
         bio: user.bio,

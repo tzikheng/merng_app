@@ -8,7 +8,7 @@ mutation register(
   $confirmPassword: String!
 ){
   register(
-    registerInput:{
+    registerInput: {
       username: $username
       email: $email
       password: $password
@@ -52,8 +52,37 @@ const GET_USER_QUERY = gql`
 query($userId: ID!){
   getUser(userId: $userId){
     avatar
+    bio
     color
     id
+    username
+  }
+}
+`
+
+const UPDATE_SETTINGS = gql`
+mutation updateSettings(
+  $avatar: String
+  $bio: String
+  $color: String
+  $username: String
+){
+  updateSettings(
+    settingsInput: {
+      avatar: $avatar
+      bio: $bio
+      color: $color
+      username: $username
+    }
+  ){
+    avatar
+    bio
+    color
+    createdAt
+    email
+    id
+    token
+    username
   }
 }
 `
@@ -155,6 +184,6 @@ mutation deleteComment($postId:ID!, $commentId:ID!){
 }
 `
 
-export { REGISTER_USER, LOGIN_USER, GET_USER_QUERY,
+export { REGISTER_USER, LOGIN_USER, GET_USER_QUERY, UPDATE_SETTINGS,
   CREATE_POST_MUTATION, GET_POST_QUERY, GET_POSTS_QUERY, DELETE_POST_MUTATION, 
   LIKE_POST_MUTATION, CREATE_COMMENT_MUTATION, DELETE_COMMENT_MUTATION}

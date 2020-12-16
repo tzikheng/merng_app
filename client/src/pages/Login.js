@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/react-hooks'
 import { useForm } from '../utility/hooks'
 import { AuthContext } from '../context/auth'
 import { LOGIN_USER } from '../utility/graphql.js'
+import { withRouter } from 'react-router-dom'
 
 function Login(props) {
   const context = useContext(AuthContext)
@@ -66,4 +67,4 @@ function Login(props) {
   )
 }
 
-export default Login
+export default withRouter(Login)

@@ -44,8 +44,8 @@ module.exports = {
       const user = checkAuth(context);
       const post = await Post.findById(postId);
       if (post) {
-        if (post.likes.find((like) => like.user.id === user.id)) {
-          post.likes = post.likes.filter((like) => like.user.id !== user.id);
+        if (post.likes.find((like) => like.user.toString() === user.id)) {
+          post.likes = post.likes.filter((like) => like.user.toString() !== user.id);
         } else {
           post.likes.push({
             createdAt: new Date().toISOString(),

@@ -42,15 +42,22 @@ module.exports = gql`
     confirmPassword: String!
     email: String!
   }
+  input settingsInput{
+    avatar: String
+    bio: String
+    color: String
+    username: String
+  }
   type Query{
     getUser(userId: ID!): User
     getUsers: [User]
-    posts: [Post]
     getPost(postId: ID!): Post
+    posts: [Post]
   }
   type Mutation{
     register(registerInput: registerInput): User!
     login(username: String!, password: String!): User!
+    updateSettings(settingsInput: settingsInput): User!
     deleteAllUsers: String
     
     createPost(body: String!): Post!

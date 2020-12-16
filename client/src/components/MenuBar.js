@@ -7,23 +7,38 @@ import { AuthContext } from '../context/auth';
 function MenuBar(){
   const { user, logout } = useContext(AuthContext)
   const color = localStorage.getItem('color') || 'black'
-  const pathname = window.location.pathname;
-  const path = pathname === '/' ? 'home' : pathname.substr(1) // if path ends '/' set home, else set /...
+  const pathname = window.location.pathname
+  const path = pathname === '/' ? 'home' : pathname.substr(1)
+  const [activeItem, setActiveItem] = useState(path)
+
   const handleItemClick = (e, { name }) => setActiveItem(name)
-  const [activeItem, setActiveItem] = useState(path) // starts here
+  function logoutAndRedirect(){
+    setActiveItem('home')
+    logout()
+  }
 
   const menuBar = user ? (
     <Menu pointing secondary size='massive' color={color}>
       <Menu.Item
         name={user.username}
-        active
+        active={activeItem === 'home'}
+        onClick={()=>{setActiveItem('home')}}
         as={Link}
         to='/'
       />
       <Menu.Menu position='right'>
         <Menu.Item
+          name='profile'
+          active={activeItem === 'profile'}
+          onClick={handleItemClick}
+          as={Link}
+          to='/profile'
+        />
+        <Menu.Item
           name='logout'
-          onClick={logout}
+          onClick={logoutAndRedirect}
+          as={Link}
+          to='/'
         />
       </Menu.Menu>
     </Menu>
