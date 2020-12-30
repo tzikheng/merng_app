@@ -2,58 +2,77 @@
 const { gql } = require('apollo-server')
 
 module.exports = gql`
+
+# Type definitions 
   type User{
     id: ID!
-    email: String!
-    token: String!
     username: String!
-    createdAt: String!
+    avatar: String
     color: String
     bio: String
-    avatar: String
+    email: String!
+    token: String!
+    createdAt: String!
   }
   type Post{
     id: ID!
-    user: User!
     body: String!
-    createdAt: String!
-    # username: String!
+    user: User!
     comments: [Comment]
     commentCount: Int!
     likes: [Like]
     likeCount: Int!
+    createdAt: String!
   }
   type Comment{
     id: ID!
-    user: User!
-    createdAt: String!
     body: String!
-    # username: String!
+    user: User!
+    likes: [Like]
+    likeCount: Int!
+    createdAt: String!
   }
   type Like{
     id: ID!
     createdAt: String!
     user: User!
-    # username: String!
   }
-  input registerInput{
-    username: String!
-    password: String!
-    confirmPassword: String!
-    email: String!
+  type Product{
+    id: ID!
+    user: User!
+    product_name: String!
+    description: String!
+    condition: String!
+    price: Float!
+    pictures: [String]
+    avgRating: Float
+    reviews: [Review]
+    reviewCount: Int!
+    likes: [Like]
+    likeCount: Int!
+    createdAt: String!
+    updatedAt: String!
   }
-  input settingsInput{
-    avatar: String
-    bio: String
-    color: String
-    username: String
+  type Review{
+    id: ID!
+    rating: Int!
+    body: String!
+    likes: [Like]
+    likeCount: Int!
+    user: User!
+    createdAt: String!
   }
+
+# Queries, mutations, inputs
   type Query{
     getUser(userId: ID!): User
     getUsers: [User]
     getPost(postId: ID!): Post
     posts: [Post]
+    getProduct(productId: ID!): Product
+    products: [Product]
   }
+
   type Mutation{
     register(registerInput: registerInput): User!
     login(username: String!, password: String!): User!
@@ -67,10 +86,32 @@ module.exports = gql`
 
     createComment(postId: ID!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
-    # TODO: likeComment(commentId: ID!): Comment
-  } 
-  type Subscription{
-    # TODO: implement user_id based subscription
-    newPost: Post!
+    likeComment(postId:ID!, commentId: ID!): Comment!
+
+    createProduct(product_name: String!, description: String!, condition: String!, price: Float!): Product!
+    likeProduct(productId: ID!): Product!
+    deleteProduct(productId: ID!): String!
+    deleteAllProducts: String
+
+    createReview(productId: ID!, rating: Int!, body: String!): Product!
+    likeReview(productId: ID!, reviewId: ID!): Review!
+    deleteReview(productId: ID!, reviewId: ID!): Product!
   }
+  
+  input registerInput{
+    username: String!
+    password: String!
+    confirmPassword: String!
+    email: String!
+  }
+  input settingsInput{
+    avatar: String
+    bio: String
+    color: String
+    username: String
+  }
+  # type Subscription{
+  #   # TODO: implement user_id based subscription
+  #   newPost: Post!
+  # }
 `

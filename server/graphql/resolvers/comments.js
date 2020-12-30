@@ -1,5 +1,4 @@
-const { AuthenticationError, UserInputError } = require('apollo-server')
-
+const { UserInputError } = require('apollo-server')
 const Post = require('../../models/Post.js')
 const checkAuth = require('../../utility/check-auth.js')
 
@@ -25,7 +24,26 @@ module.exports = {
         return post;
       } else throw new UserInputError('Post not found')
     },
-
+    async likeComment(_, { postId, commentId }, context) {
+      try{
+        const user = checkAuth(context)
+        const post = await Post.findById(postId)
+        const comment = post.comments.filter((comment) => comment.id.toString() === commentId)[0]
+        console.log(comment)
+        if (comment.likes.find((like) => like.user.toString() === user.id)){
+          comment.likes = comment.likes.filter((like) => like.user.toString() !== user.id)
+        } else {
+          comment.likes.push({
+            createdAt: new Date().toISOString(),
+            user: user.id
+          })
+        }
+          await post.save()
+          return(comment)
+        } catch(err) {
+        console.log(err) // throw new Error(err)
+      }
+    },
     async deleteComment(_, { postId, commentId}, context){
       const user = checkAuth(context);
       try{
