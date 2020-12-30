@@ -30,14 +30,10 @@ module.exports = {
       const user = checkAuth(context);
       try{
         const post = await Post.findById(postId)
-        commentIndex = post.comments.findIndex(comment=>comment.id===commentId)
-        if(post.comments[commentIndex].user.toString()===user.id){
-          post.comments.splice(commentId,1)
-          await post.save()
-          return post
-        } else {
-        throw new AuthenticationError('Action not allowed')
-        }
+        post.comments = post.comments.filter((comment) => comment.id.toString() !== commentId);
+        // TODO: post owner can delete all comments
+        await post.save()
+        return post
       } catch(err) {
         throw new Error(err)
       }

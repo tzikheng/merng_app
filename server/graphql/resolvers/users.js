@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { buildSchemaFromTypeDefinitions } = require('apollo-server')
 const { UserInputError } = require('apollo-server')
 
 const User = require('../../models/User.js')
@@ -12,7 +11,7 @@ function generateToken(user){
   return jwt.sign(
     {id: user.id, avatar: user.avatar, bio: user.bio, color: user.color, username: user.username}, // removed email: user.email
     SECRET_KEY, 
-    { expiresIn: '1h'})
+    { expiresIn: '7d'})
 }
 
 module.exports = {
