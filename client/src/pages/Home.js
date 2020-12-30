@@ -1,14 +1,12 @@
-import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { Card, Grid, Transition } from 'semantic-ui-react'
+import React from 'react'
 import { withRouter } from 'react-router-dom'
-
-import PostForm from '../components/PostForm.js'
+import { Card, Grid, Transition } from 'semantic-ui-react'
 import PostCard from '../components/PostCard.js'
+import PostForm from '../components/PostForm.js'
 import { GET_POSTS_QUERY } from '../utility/graphql.js'
 
 function Home() {
-  const color = localStorage.getItem('color') || 'black'
   const { loading, error, data} = useQuery(GET_POSTS_QUERY)
   if(error){
     console.log(error)

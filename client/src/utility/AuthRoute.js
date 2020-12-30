@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 import { AuthContext } from '../context/auth.js'
 
-function AuthRoute({ component: Component, ...rest}){ // destructure props into component & ...rest
+function AuthRoute({ component: Component, ...rest}){
   const { user } = useContext(AuthContext)
 
   return (

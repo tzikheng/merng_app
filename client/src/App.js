@@ -1,32 +1,33 @@
-import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom'
-import { Container } from 'semantic-ui-react'
-
-import { AuthProvider } from './context/auth.js'
-import AuthRoute from './utility/AuthRoute.js'
+import { createBrowserHistory } from 'history'
+import React from 'react'
+import { Route, Router } from 'react-router-dom'
 import 'semantic-ui-css/semantic.min.css'
+import { Container } from 'semantic-ui-react'
 import './App.css'
-
-import MenuBar from './components/MenuBar'
+import NavBar from './components/NavBar'
+import { AuthProvider } from './context/auth.js'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
 import SinglePost from './pages/SinglePost'
+import AuthRoute from './utility/AuthRoute.js'
 
 function App(){
+  const history = createBrowserHistory()
+  
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <Router history={history}>
         <Container textAlign='left'>
-          <MenuBar />
+          <NavBar/>
           <Route exact path='/' component={Home}/>
           <AuthRoute exact path='/login' component={Login}/>
           <AuthRoute exact path='/register' component={Register}/>
           <Route exact path='/profile' component={Profile}/>
           <Route exact path='/posts/:postId' component={SinglePost}/>
         </Container>
-      </BrowserRouter>
+      </Router>
     </AuthProvider>
   );
 }

@@ -1,17 +1,17 @@
-import React, { useContext, useState, useRef } from 'react'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import moment from 'moment'
+import React, { useContext, useRef, useState } from 'react'
 import { Card, Form, Grid, Image, Transition } from 'semantic-ui-react'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import { AuthContext } from '../context/auth'
-import { GET_POST_QUERY, CREATE_COMMENT_MUTATION } from '../utility/graphql.js'
+import CommentButton from '../components/CommentButton'
 import DeleteButton from '../components/DeleteButton'
 import LikeButton from '../components/LikeButton'
-import CommentButton from '../components/CommentButton'
+import { AuthContext } from '../context/auth'
+import { CREATE_COMMENT_MUTATION, GET_POST_QUERY } from '../utility/graphql.js'
 
 function SinglePost(props){
   const { user } = useContext(AuthContext)
   const postId = props.match.params.postId;
-  const color = localStorage.getItem('color')
+  const color = (user? (user.color || 'black') : 'black')
   const commentInputRef = useRef(null);
   const [comment, setComment] = useState('');
   const [createComment, { loading: creatingComment }] = useMutation(CREATE_COMMENT_MUTATION, {

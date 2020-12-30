@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react'
-import { Button, Form } from 'semantic-ui-react'
 import { useMutation } from '@apollo/react-hooks'
-import { useForm } from '../utility/hooks'
+import React, { useContext, useState } from 'react'
+import { withRouter } from 'react-router-dom'
+import { Button, Form } from 'semantic-ui-react'
 import { AuthContext } from '../context/auth'
 import { LOGIN_USER } from '../utility/graphql.js'
-import { withRouter } from 'react-router-dom'
+import { useForm } from '../utility/hooks'
 
 function Login(props) {
   const context = useContext(AuthContext)
@@ -24,8 +24,6 @@ function Login(props) {
     }
   })
   function loginUserCallback(){loginUser()}
-  // server-side validation in place so no client side validation required.
-  // will send mutation to server and persist changes if valid
   
   return (
     <div className='form-container'>

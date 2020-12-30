@@ -1,31 +1,32 @@
-import React, { useContext, useState } from 'react'
-import { Button, Card, Form, Image } from 'semantic-ui-react'
 import { useMutation } from '@apollo/react-hooks'
-import { useForm } from '../utility/hooks'
+import React, { useContext, useState } from 'react'
+import { withRouter } from 'react-router-dom'
+import { Button, Card, Form, Image } from 'semantic-ui-react'
 import { AuthContext } from '../context/auth'
 import { UPDATE_SETTINGS } from '../utility/graphql.js'
-import { withRouter } from 'react-router-dom'
+import { useForm } from '../utility/hooks'
 
 function Profile(props) {
-  const { user } = useContext(AuthContext)
+  const context = useContext(AuthContext)
+  const _color = (context.user? (context.user.color || 'black') : 'black')
   const [newAvatar, setNewAvatar] = useState('')
-  const [newColor, setNewColor] = useState(localStorage.getItem('color'))
+  const [newColor, setNewColor] = useState(_color)
   const { onChange, onSubmit, values } = useForm(updateSettingsCallback, {
     avatar:'',
     bio:'',
     color:'',
     username:''
-  })
+  }
+  )
   const [updateSettings, {loading}] = useMutation(UPDATE_SETTINGS,{
     variables: values,
-    onCompleted(){
-      setNewColor(values.color)
-      localStorage.setItem('color',values.color||user.color)
+    onCompleted(data){
+      context.update(data.updateSettings)
+      props.history.push('/')
     }
   })
   function updateSettingsCallback(){updateSettings()}
-    const { avatar:currentAvatar, bio, color, username } = user
-    // setNewColor(color)
+    const { avatar:currentAvatar, bio, color, username } = context.user
 
     const colorOptions = [
       { key: 'black', value: 'black', text: 'Black' },

@@ -1,24 +1,31 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Menu } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../context/auth';
 
-// export default class MenuExampleSecondaryPointing extends Component {
-function MenuBar(){
+function NavBar(){
   const { user, logout } = useContext(AuthContext)
-  const color = localStorage.getItem('color') || 'black'
+  const color = (user? (user.color || 'black') : 'black')
   const pathname = window.location.pathname
   const path = pathname === '/' ? 'home' : pathname.substr(1)
   const [activeItem, setActiveItem] = useState(path)
-
+  useEffect(()=>{
+    setActiveItem(window.location.pathname === '/' ? 'home' : pathname.substr(1)) 
+    // FIXME: setActiveItem(path) here will not update NavBar after logging in/updating profile settings
+  },[user, path, pathname])
   const handleItemClick = (e, { name }) => setActiveItem(name)
+  
   function logoutAndRedirect(){
     setActiveItem('home')
     logout()
   }
 
-  const menuBar = user ? (
-    <Menu pointing secondary size='massive' color={color}>
+  const NavBar = user ? (
+    <Menu 
+      pointing 
+      secondary 
+      size='massive' 
+      color={color}>
       <Menu.Item
         name={user.username}
         active={activeItem === 'home'}
@@ -69,8 +76,8 @@ function MenuBar(){
       </Menu.Menu>
     </Menu>
   )
-  return menuBar
+  return NavBar
 }
 
 
-export default MenuBar;
+export default NavBar;
