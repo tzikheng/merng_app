@@ -42,7 +42,6 @@ module.exports = {
     },
     avgRating(parent){
       if(parent.reviews.length===0){
-        console.log("No reviews yet")
         return 0
       }else{
         let sum = 0

@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Button, Form } from 'semantic-ui-react'
 import { AuthContext } from '../context/auth'
-import { LOGIN_USER } from '../utility/graphql.js'
+import { LOGIN_USER } from '../utility/gql_1.js'
 import { useForm } from '../utility/hooks'
 
 function Login(props) {

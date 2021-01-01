@@ -1,23 +1,56 @@
-import React, { useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
+import React, { useState } from 'react'
 import { Button, Confirm, Icon, Popup } from 'semantic-ui-react'
-import { DELETE_COMMENT_MUTATION, DELETE_POST_MUTATION, GET_POSTS_QUERY } from '../utility/graphql.js'
+import { DELETE_COMMENT_MUTATION, DELETE_POST_MUTATION, GET_POSTS_QUERY } from '../utility/gql_1.js'
+import { DELETE_PRODUCT_MUTATION, DELETE_REVIEW_MUTATION, GET_PRODUCTS_QUERY } from '../utility/gql_2.js'
 
-function DeleteButton({ postId, commentId, callback }){
+function DeleteButton({ size='mini', float='right', type, parentId, childId, callback }){
   const [confirmOpen, setConfirmOpen] = useState(false)
-  const mutation = commentId ? DELETE_COMMENT_MUTATION : DELETE_POST_MUTATION
   
-  const [deletePostOrComment] = useMutation(mutation,{
-    variables: { postId, commentId },
+  let mutation
+  let query
+  switch(type){
+    case 'post':
+      mutation = DELETE_POST_MUTATION
+      query = GET_POSTS_QUERY
+      break
+    case 'product':
+      mutation = DELETE_PRODUCT_MUTATION
+      query = GET_PRODUCTS_QUERY
+      break
+    case 'comment':
+      mutation = DELETE_COMMENT_MUTATION
+      query = null
+      break
+    case 'review':
+      mutation = DELETE_REVIEW_MUTATION
+      query = null
+      break
+    default:
+      mutation = null
+      query = null
+    }
+
+  const [_delete] = useMutation(mutation,{
+    variables: { parentId, childId },
     update(proxy){
       setConfirmOpen(false)
-      if (!commentId){
-        const data = proxy.readQuery({query: GET_POSTS_QUERY})
-        const remainingPosts = data.posts.filter(post => post.id !== postId)
+
+      if (!childId){
+        const data = proxy.readQuery({query})
+        if (data.posts){
+        const remainingPosts = data.posts.filter(post => post.id !== parentId )
         proxy.writeQuery({ 
-          query: GET_POSTS_QUERY,
+          query,
           data: {posts: remainingPosts}
         })
+        } else if (data.products){
+          const remainingProducts = data.products.filter(product => product.id !== parentId )
+          proxy.writeQuery({ 
+            query,
+            data: {products: remainingProducts}
+          })
+        }
       }
       if(callback) callback()
     }
@@ -25,19 +58,20 @@ function DeleteButton({ postId, commentId, callback }){
 
   return(
     <>
-    <Popup inverted content={commentId? 'Delete comment':'Delete post'} trigger={
+    <Popup inverted content={`Delete ${type}`} trigger={
       <Button basic
         as='div'
-        color='red' 
-        floated='right'
-        onClick={()=>setConfirmOpen(true)}>
+        color='red'
+        floated={float||null}
+        onClick={()=>setConfirmOpen(true)}
+        size={size}>
         <Icon name='trash' style={{margin:0}}/>
       </Button>
     }/>
     <Confirm
       open={confirmOpen}
       onCancel={()=>setConfirmOpen(false)}
-      onConfirm={deletePostOrComment}/>
+      onConfirm={_delete}/>
     </>
   )
 }

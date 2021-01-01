@@ -13,25 +13,27 @@ function PostCard({post}){
     <Card 
       fluid 
       color={post.user.color} 
-      style={{height: 170, width: 350, margin: 10}}>
+      style={{height: 180, width: 270, margin: 5}}>
       <Card.Content>
         <Image
           floated='right'
           size='mini'
           src={post.user.avatar}
+          rounded
           />
         <Card.Header style={{marginBottom:2}}>{post.user.username}</Card.Header>
         <Card.Meta as={Link} to={`/posts/${post.id}`}  style={{marginBottom:2}}>
           {moment(post.createdAt).fromNow()}
         </Card.Meta>
-        <Card.Description style={{wordWrap: 'break-word', height: 40, overflow: 'ellipsis'}}>
-          {post.body.length>70? post.body.substring(0,70)+'...':post.body}
+        <Card.Description className='body' style={{wordWrap: 'break-word', height: 40, overflow: 'ellipsis'}}>
+          {post.body.length>60? post.body.substring(0,60)+'...':post.body}
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
         <LikeButton 
           color={post.user.color} 
-          post={{
+          type='post'
+          item={{
             id:post.id, 
             likeCount:post.likeCount, 
             likes:post.likes
@@ -43,8 +45,8 @@ function PostCard({post}){
           popUp='Comments' 
           redirect={`/posts/${post.id}`}
         />
-        {user && user.username===post.user.username && 
-          <DeleteButton postId={post.id}/>
+        {user && user.id===post.user.id && 
+          <DeleteButton type='post' parentId={post.id}/>
         }
       </Card.Content>
     </Card>
@@ -52,17 +54,3 @@ function PostCard({post}){
 }
 
 export default PostCard;
-
-
-{/* <div className='ui link card' key={comment.id}>
-  <div className='content'>
-    {user && user.id === comment.user.id && (
-      <DeleteButton postId={post.id} commentId={comment.id} />
-    )}
-    <div className='header'>{comment.user.username}</div>
-    <div className='meta'>{moment(comment.createdAt).fromNow()}</div>
-    <div className='description' style={{wordWrap: 'break-word'}}>
-      {comment.body}
-    </div>
-  </div>
-</div> */}

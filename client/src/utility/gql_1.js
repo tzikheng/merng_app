@@ -148,8 +148,8 @@ mutation likePost($postId: ID!){
 `
 
 const DELETE_POST_MUTATION = gql`
-mutation deletePost($postId: ID!){
-  deletePost(postId: $postId)
+mutation deletePost($parentId: ID!){
+  deletePost(parentId: $parentId)
 }
 `
 
@@ -168,10 +168,9 @@ mutation($postId: ID!, $body: String!){
 }
 `
 
-
 const DELETE_COMMENT_MUTATION = gql`
-mutation deleteComment($postId:ID!, $commentId:ID!){
-  deleteComment(postId: $postId,commentId: $commentId){
+mutation deleteComment($parentId:ID!, $childId:ID!){
+  deleteComment(parentId: $parentId, childId: $childId){
     body
     commentCount
     comments{body createdAt id user{avatar color id username}}

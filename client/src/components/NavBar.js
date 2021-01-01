@@ -11,7 +11,6 @@ function NavBar(){
   const [activeItem, setActiveItem] = useState(path)
   useEffect(()=>{
     setActiveItem(window.location.pathname === '/' ? 'home' : pathname.substr(1)) 
-    // FIXME: setActiveItem(path) here will not update NavBar after logging in/updating profile settings
   },[user, path, pathname])
   const handleItemClick = (e, { name }) => setActiveItem(name)
   
@@ -32,6 +31,13 @@ function NavBar(){
         onClick={()=>{setActiveItem('home')}}
         as={Link}
         to='/'
+      />
+      <Menu.Item
+        name='marketplace'
+        active={activeItem === 'marketplace'}
+        onClick={()=>{setActiveItem('marketplace')}}
+        as={Link}
+        to='/marketplace'
       />
       <Menu.Menu position='right'>
         <Menu.Item
@@ -57,6 +63,13 @@ function NavBar(){
         onClick={handleItemClick}
         as={Link}
         to='/'
+      />
+      <Menu.Item
+        name='marketplace'
+        active={activeItem === 'marketplace'}
+        onClick={()=>{setActiveItem('marketplace')}}
+        as={Link}
+        to='/marketplace'
       />
       <Menu.Menu position='right'>
         <Menu.Item

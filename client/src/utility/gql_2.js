@@ -1,0 +1,161 @@
+import gql from 'graphql-tag'
+
+const CREATE_PRODUCT_MUTATION = gql`
+mutation createProduct(
+  $product_name: String!, 
+  $condition: String!,
+  $price: String!, #TODO: FLOAT 
+  $description: String,
+  $images: String){
+    createProduct(
+      product_name: $product_name,
+      price: $price,
+      condition: $condition,
+      description: $description,
+      images: $images){
+        avgRating
+        condition
+        createdAt
+        description
+        id
+        likeCount
+        likes{id createdAt user{id username}}
+        images
+        price
+        product_name
+        reviewCount
+        reviews{rating body createdAt id user{avatar color id username}}
+        updatedAt
+        user{id username avatar color}
+      }
+    }
+`
+
+const GET_PRODUCT_QUERY = gql`
+query($productId: ID!){
+  getProduct(productId: $productId){
+  avgRating
+  condition
+  createdAt
+  description
+  id
+  likeCount
+  likes{id createdAt user{id username}}
+  images
+  price
+  product_name
+  reviewCount
+  reviews{rating body createdAt id user{avatar color id username}}
+  updatedAt
+  user{id username avatar color}
+  }
+}
+`
+
+const GET_PRODUCTS_QUERY = gql`
+{
+  products{
+  avgRating
+  condition
+  createdAt
+  description
+  id
+  likeCount
+  likes{id createdAt user{id username}}
+  images
+  price
+  product_name
+  reviewCount
+  reviews{rating body createdAt id user{avatar color id username}}
+  updatedAt
+  user{id username avatar color}
+  }
+}
+`
+
+const LIKE_PRODUCT_MUTATION = gql`
+mutation likeProduct($productId: ID!){
+  likeProduct(productId: $productId){
+    avgRating
+    condition
+    createdAt
+    description
+    id
+    likeCount
+    likes{id createdAt user{id username}}
+    images
+    price
+    product_name
+    reviewCount
+    reviews{rating body createdAt id user{avatar color id username}}
+    updatedAt
+    user{id username avatar color}
+  }
+}
+`
+
+const DELETE_PRODUCT_MUTATION = gql`
+mutation deleteProduct($productId: ID!){
+  deleteProduct(productId: $productId)
+}
+`
+
+const CREATE_REVIEW_MUTATION = gql`
+mutation($productId: ID!, $body: String!){
+  createReview(productId: $productId, body: $body){
+    avgRating
+    condition
+    createdAt
+    description
+    id
+    likeCount
+    likes{id createdAt user{id username}}
+    images
+    price
+    product_name
+    reviewCount
+    reviews{rating body createdAt id user{avatar color id username}}
+    updatedAt
+    user{id username avatar color}
+  }
+}
+`
+
+const LIKE_REVIEW_MUTATION = gql`
+mutation likeReview($productId: ID!, $reviewId: ID){
+  likeReview(productId: $productId, reviewId: $reviewId){
+    body
+    createdAt
+    id
+    likes
+    likeCount
+    rating
+    user
+  }
+}
+`
+
+const DELETE_REVIEW_MUTATION = gql`
+mutation deleteReview($productId:ID!, $reviewId:ID!){
+  deleteReview(productId: $productId,reviewId: $reviewId){
+    avgRating
+    condition
+    createdAt
+    description
+    id
+    likeCount
+    likes{id createdAt user{id username}}
+    images
+    price
+    product_name
+    reviewCount
+    reviews{rating body createdAt id user{avatar color id username}}
+    updatedAt
+    user{id username avatar color}
+  }
+}
+`
+
+export { 
+  CREATE_PRODUCT_MUTATION, GET_PRODUCT_QUERY, GET_PRODUCTS_QUERY, LIKE_PRODUCT_MUTATION, DELETE_PRODUCT_MUTATION, 
+  CREATE_REVIEW_MUTATION, LIKE_REVIEW_MUTATION, DELETE_REVIEW_MUTATION}

@@ -19,3 +19,7 @@ h2 {
 .ui.teal.buttons.button:focus{
   background-color: #00b5ad;
 }
+
+.body {
+  font-size: 16
+}

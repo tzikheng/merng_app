@@ -11,7 +11,9 @@ import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
 import SinglePost from './pages/SinglePost'
+import Marketplace from './pages/Marketplace'
 import AuthRoute from './utility/AuthRoute.js'
+
 
 function App(){
   const history = createBrowserHistory()
@@ -22,6 +24,7 @@ function App(){
         <Container textAlign='left'>
           <NavBar/>
           <Route exact path='/' component={Home}/>
+          <Route exact path='/marketplace' component={Marketplace}/>
           <AuthRoute exact path='/login' component={Login}/>
           <AuthRoute exact path='/register' component={Register}/>
           <Route exact path='/profile' component={Profile}/>

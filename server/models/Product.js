@@ -3,9 +3,10 @@ const { model, Schema } = require('mongoose')
 const productSchema = new Schema({
   product_name: String,
   description: String,
-  condition: {type:String, enum: ["New", "Used"]},
-  pictures: [String],
+  condition: String,
+  images: [String],
   createdAt: String,
+  updatedAt: String,
   price: Number,
   user: {
     type: Schema.ObjectId,
@@ -15,7 +16,6 @@ const productSchema = new Schema({
     {
       rating: {type: Number, min:0, max:5},
       body: String,
-      createdAt: String,
       user: {
         type: Schema.ObjectId,
         ref: 'users'
@@ -28,7 +28,8 @@ const productSchema = new Schema({
             ref: 'users'
           }, 
         }
-      ]
+      ],
+      createdAt: String
     }
   ],
   likes: [

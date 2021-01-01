@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Button, Card, Form, Image } from 'semantic-ui-react'
 import { AuthContext } from '../context/auth'
-import { UPDATE_SETTINGS } from '../utility/graphql.js'
+import { UPDATE_SETTINGS } from '../utility/gql_1.js'
 import { useForm } from '../utility/hooks'
 
 function Profile(props) {
@@ -33,13 +33,15 @@ function Profile(props) {
       { key: 'blue', value: 'blue', text: 'Blue' },
       { key: 'brown', value: 'brown', text: 'Brown' },
       { key: 'green', value: 'green', text: 'Green' },
+      { key: 'grey', value: 'grey', text: 'Grey' },
+      { key: 'olive', value: 'olive', text: 'Olive' },
       { key: 'orange', value: 'orange', text: 'Orange' },
       { key: 'pink', value: 'pink', text: 'Pink' },
       { key: 'purple', value: 'purple', text: 'Purple' },
       { key: 'red', value: 'red', text: 'Red' },
       { key: 'teal', value: 'teal', text: 'Teal' },
+      { key: 'violet', value: 'violet', text: 'Violet' },
       { key: 'yellow', value: 'yellow', text: 'Yellow' },
-      { key: 'white', value: 'white', text: 'White' },
     ]
     const avatarOptions = [
       'https://semantic-ui.com/images/avatar/large/elliot.jpg',

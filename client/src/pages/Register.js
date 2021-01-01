@@ -3,7 +3,7 @@ import { Button, Form } from 'semantic-ui-react'
 import { useMutation } from '@apollo/react-hooks'
 import { useForm } from '../utility/hooks'
 import { AuthContext } from '../context/auth'
-import { REGISTER_USER } from '../utility/graphql.js'
+import { REGISTER_USER } from '../utility/gql_1.js'
 import { withRouter } from 'react-router-dom'
 
 function Register(props) {

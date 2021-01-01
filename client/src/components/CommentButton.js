@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Icon, Label, Popup } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
-function CommentButton({color, commentCount, popUp, onClickFunction, redirect}){
+function CommentButton({color, size='mini', commentCount, popUp, onClickFunction, redirect}){
   return (
     <>
     <Popup inverted content={popUp} trigger={
@@ -10,8 +10,9 @@ function CommentButton({color, commentCount, popUp, onClickFunction, redirect}){
         as={redirect? Link : 'div'}
         labelPosition='right' 
         onClick={onClickFunction}
-        to={redirect? redirect : null}>
-        <Button color={color} basic>
+        to={redirect? redirect : null}
+        size={size}>
+        <Button color={color} basic size={size}>
           <Icon name='comments' />
         </Button>
         <Label basic color={color} pointing='left'>

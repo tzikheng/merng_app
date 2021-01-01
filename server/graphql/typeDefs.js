@@ -44,23 +44,23 @@ module.exports = gql`
     description: String!
     condition: String!
     price: Float!
-    pictures: [String]
+    images: [String]
     avgRating: Float
     reviews: [Review]
     reviewCount: Int!
     likes: [Like]
     likeCount: Int!
     createdAt: String!
-    updatedAt: String!
+    updatedAt: String
   }
   type Review{
-    id: ID!
-    rating: Int!
     body: String!
+    createdAt: String!
+    id: ID!
     likes: [Like]
     likeCount: Int!
+    rating: Int!
     user: User!
-    createdAt: String!
   }
 
 # Queries, mutations, inputs
@@ -81,21 +81,29 @@ module.exports = gql`
     
     createPost(body: String!): Post!
     likePost(postId: ID!): Post!
-    deletePost(postId: ID!): String!
+    deletePost(parentId: ID!): String!
     deleteAllPosts: String
 
     createComment(postId: ID!, body: String!): Post!
-    deleteComment(postId: ID!, commentId: ID!): Post!
+    deleteComment(parentId: ID!, childId: ID!): Post!
     likeComment(postId:ID!, commentId: ID!): Comment!
 
-    createProduct(product_name: String!, description: String!, condition: String!, price: Float!): Product!
+    createProduct(
+      product_name: String!, 
+      price: String!,
+      condition: String!,
+      description: String, 
+      images: String): Product!
     likeProduct(productId: ID!): Product!
-    deleteProduct(productId: ID!): String!
+    deleteProduct(parentId: ID!): String!
     deleteAllProducts: String
 
-    createReview(productId: ID!, rating: Int!, body: String!): Product!
+    createReview(
+      productId: ID!, 
+      rating: Int!, 
+      body: String!): Product!
     likeReview(productId: ID!, reviewId: ID!): Review!
-    deleteReview(productId: ID!, reviewId: ID!): Product!
+    deleteReview(parentId: ID!, childId: ID!): Product!
   }
   
   input registerInput{

@@ -6,7 +6,7 @@ import CommentButton from '../components/CommentButton'
 import DeleteButton from '../components/DeleteButton'
 import LikeButton from '../components/LikeButton'
 import { AuthContext } from '../context/auth'
-import { CREATE_COMMENT_MUTATION, GET_POST_QUERY } from '../utility/graphql.js'
+import { CREATE_COMMENT_MUTATION, GET_POST_QUERY } from '../utility/gql_1.js'
 
 function SinglePost(props){
   const { user } = useContext(AuthContext)
@@ -50,7 +50,8 @@ function SinglePost(props){
               <Image
                 src={post.user.avatar}
                 size='small'
-                float='right'/>
+                float='right'
+                rounded/>
               </Grid.Column>
 
               <Grid.Column width={10}>
@@ -69,21 +70,23 @@ function SinglePost(props){
                   <Card.Content extra>
                   <LikeButton 
                     color={post.user.color} 
-                    post={{
+                    type='post'
+                    size='tiny'
+                    item={{
                       id:post.id, 
                       likeCount:post.likeCount, 
                       likes:post.likes
                     }}
                     />
                     <CommentButton 
-                      color={post.user.color} 
+                      color={post.user.color}
+                      size='tiny'
                       commentCount={post.commentCount}
                       popUp = {user?'Comments':'Log in to comment'}
                       redirect={user?'':'/login'}
-                      // onClick={()=>console.log('Comment on post')} TODO: click to enter comment box
                       />
                     {user && user.id === post.user.id && (
-                      <DeleteButton postId={post.id} callback={deletePostCallback}/>
+                      <DeleteButton type='post' size='tiny' parentId={post.id} callback={deletePostCallback}/>
                     )}
                       
                   </Card.Content>
@@ -124,13 +127,14 @@ function SinglePost(props){
                             floated='left'
                             size='mini'
                             src={comment.user.avatar}
+                            rounded
                             />
                           <Card.Header>{comment.user.username}</Card.Header>
                           <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
                           <Card.Description style={{wordWrap: 'break-word'}}>
                             {comment.body}
                             {user && user.id === comment.user.id && (
-                              <DeleteButton postId={post.id} commentId={comment.id} />
+                              <DeleteButton type='comment' parentId={post.id} childId={comment.id} />
                             )}
                           </Card.Description>
                         </Card.Content>

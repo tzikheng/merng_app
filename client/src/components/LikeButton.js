@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { Button, Icon, Label, Popup } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import { LIKE_POST_MUTATION } from '../utility/graphql.js'
+import { LIKE_POST_MUTATION } from '../utility/gql_1.js'
 import { AuthContext } from '../context/auth'
+import { LIKE_PRODUCT_MUTATION } from '../utility/gql_2.js'
 
-function LikeButton({color, post: { id, likeCount, likes } }){
+function LikeButton({color, type, size='mini', item: { id, likeCount, likes } }){
   const [liked, setLiked] = useState(false)
   const { user } = useContext(AuthContext)
 
@@ -14,40 +15,58 @@ function LikeButton({color, post: { id, likeCount, likes } }){
       setLiked(true);
     } else setLiked(false);
   }, [user, likes]);
+  
+  let mutation 
+  let variables
 
-  const [likePost] = useMutation(LIKE_POST_MUTATION,{
-    variables: { postId: id },
+  switch(type){
+    case 'post':
+      mutation = LIKE_POST_MUTATION
+      variables = { postId: id }
+      break
+    case 'product':
+      mutation = LIKE_PRODUCT_MUTATION
+      variables = { productId: id }
+      break
+    default:
+      mutation = null
+      variables = null
+    }
+
+  const [likeType] = useMutation(
+    mutation,{
+    variables,
   })
 
 const likeButton = user ? (
   liked ? (
-    <Button color={color} onClick={likePost}>
+    <Button color={color} onClick={likeType} size={size}>
       <Icon name="heart" />
     </Button>
   ) : (
-    <Button color={color} basic onClick={likePost}>
+    <Button color={color} basic onClick={likeType} size={size}>
       <Icon name="heart" />
     </Button>
   )
 ) : (
-  <Button color={color} basic as={Link} to="/login">
+  <Button color={color} basic as={Link} to="/login" size={size}>
     <Icon name="heart" />
   </Button>
 );
 
 const popupContent = user ? (
   liked ? ( 
-    'Unlike post'
+    `Unlike ${type}`
     ) : (
-      'Like post'
+      `Like ${type}`
       )
   ) : (
-    'Log in to like post'
+    `Log in to like ${type}`
   )
 
 return (
   <Popup inverted content={popupContent} trigger={
-    <Button as="div" labelPosition="right">
+    <Button as="div" labelPosition="right" size={size}>
       {likeButton}
       <Label basic color={color} pointing="left">
         {likeCount}

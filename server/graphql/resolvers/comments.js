@@ -44,11 +44,11 @@ module.exports = {
         console.log(err) // throw new Error(err)
       }
     },
-    async deleteComment(_, { postId, commentId}, context){
+    async deleteComment(_, { parentId, childId}, context){
       const user = checkAuth(context);
       try{
-        const post = await Post.findById(postId)
-        post.comments = post.comments.filter((comment) => comment.id.toString() !== commentId);
+        const post = await Post.findById(parentId)
+        post.comments = post.comments.filter((comment) => comment.id.toString() !== childId)
         // TODO: post owner can delete all comments
         await post.save()
         return post

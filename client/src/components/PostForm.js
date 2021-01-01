@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { Card, Form, Grid } from 'semantic-ui-react'
-import { CREATE_POST_MUTATION, GET_POSTS_QUERY} from '../utility/graphql.js'
+import { CREATE_POST_MUTATION, GET_POSTS_QUERY} from '../utility/gql_1.js'
 import { AuthContext } from '../context/auth.js'
 
 function PostForm() {
@@ -21,7 +21,7 @@ function PostForm() {
   });
   
   return (
-    <Card fluid color={color} style={{height: 170, width: 350, margin: 10}}>
+    <Card fluid color={color} style={{height: 180, width: 270, margin: 5}}>
       <Card.Content>
         {user ? (
           <>
@@ -51,7 +51,7 @@ function PostForm() {
             <Grid verticalAlign='middle' columns={1} centered>
               <Grid.Row>
                 <Grid.Column>
-                  <h2>{'Log in to share!'}</h2>
+                  <h2>{'Log in to share something!'}</h2>
                 </Grid.Column>
               </Grid.Row>
             </Grid>

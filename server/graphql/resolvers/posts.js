@@ -1,13 +1,12 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
-
-const Post = require('../../models/Post.js')
 const checkAuth = require('../../utility/check-auth.js')
+const Post = require('../../models/Post.js')
 
 module.exports = {
   Query:{
     async posts(){
       try{
-        const posts = await Post.find().sort({ createdAt: -1 }) // no condition, select *
+        const posts = await Post.find().sort({ createdAt: -1 })
         return posts
       } catch(err){
         throw new Error(err)
@@ -28,7 +27,7 @@ module.exports = {
     }
   },
 
-  Mutation:{ // DO NOT add the authetication middleware for express itself, it will run even on unprotected routes
+  Mutation:{
     async createPost(_, { body }, context){
       const user = checkAuth(context)
       const newPost = new Post({
@@ -57,10 +56,10 @@ module.exports = {
       } else throw new UserInputError('Post not found');
     },
     
-    async deletePost(_, { postId }, context){
+    async deletePost(_, { parentId }, context){
       const user = checkAuth(context)
       try{
-        const post = await Post.findById(postId)
+        const post = await Post.findById(parentId)
         if(post.user.toString()===user.id){
           await post.delete()
           return 'Post deleted successfully'
