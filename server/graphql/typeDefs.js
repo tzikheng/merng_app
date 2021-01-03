@@ -67,7 +67,7 @@ module.exports = gql`
   type Query{
     getUser(userId: ID!): User
     getUsers: [User]
-    getPost(postId: ID!): Post
+    getPost(parentId: ID!): Post
     posts: [Post]
     getProduct(productId: ID!): Product
     products: [Product]

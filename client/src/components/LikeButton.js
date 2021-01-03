@@ -56,12 +56,12 @@ const likeButton = user ? (
 
 const popupContent = user ? (
   liked ? ( 
-    `Unlike ${type}`
+    `Unlike ${type==='product'?'item':type}`
     ) : (
-      `Like ${type}`
+      `Like ${type==='product'?'item':type}`
       )
   ) : (
-    `Log in to like ${type}`
+    `Log in to like ${type==='product'?'item':type}`
   )
 
 return (

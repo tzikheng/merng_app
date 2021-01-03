@@ -22,7 +22,7 @@ function SinglePost(props){
     }
   });
   const { loading, error, data } = useQuery(GET_POST_QUERY, {
-    variables: { postId }
+    variables: { parentId: postId }
   })
   if(error){
     console.log(error)
@@ -50,7 +50,6 @@ function SinglePost(props){
               <Image
                 src={post.user.avatar}
                 size='small'
-                float='right'
                 rounded/>
               </Grid.Column>
 

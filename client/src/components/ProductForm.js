@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/react-hooks'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button, Card, Form, Grid } from 'semantic-ui-react'
 import { AuthContext } from '../context/auth.js'
 import { CREATE_PRODUCT_MUTATION, GET_PRODUCTS_QUERY } from '../utility/gql_2.js'
@@ -8,6 +8,7 @@ import { useForm } from '../utility/hooks'
 function ProductForm() {
   const { user } = useContext(AuthContext)
   const color = (user? (user.color || 'black') : 'black')
+  const [errors, setErrors] = useState({})
   const { onChange, onSubmit, values, setValues } = useForm(createProductCallback, {
     product_name:'',
     price:'',
@@ -18,7 +19,7 @@ function ProductForm() {
   const [createProduct, { loading }] = useMutation(CREATE_PRODUCT_MUTATION, {
     variables: values,
     onError(error){
-      // setErrors(error.graphQLErrors[0].extensions.exception.errors)
+      error.graphQLErrors && setErrors(error.graphQLErrors[0].extensions.exception.errors)
     },
     update(proxy, result){
       const data = proxy.readQuery({query: GET_PRODUCTS_QUERY})
@@ -47,30 +48,34 @@ function ProductForm() {
       <Card.Content>
         {user ? (
           <>
-            <Card.Header style={{marginBottom: 15}}>
+            <Card.Header 
+              style={{marginBottom: 15}}>
               {'New item'}
             </Card.Header>
             <Card.Content>
               <Form 
-                onSubmit={onSubmit} 
-                style={{marginBottom: 2}}>
+                onSubmit={onSubmit}>
                   <Form.Input
                     label='Listing title'
                     placeholder='The Lord of the Rings'
                     name='product_name'
                     type='text'
                     value={values.product_name}
-                    // errors={errors.product_name ? true : false}
+                    error={errors.product_name ? true : false}
                     onChange={onChange}
                     />
-                  <Form.Group widths='equal'>
+                  <Form.Group 
+                    widths='equal' 
+                    unstackable
+                    style={{marginTop: 10, marginBottom: 15}}
+                    >
                     <Form.Input
                       label='Price'
                       placeholder='15.00'
                       name='price'
                       type='text'
                       value={values.price}
-                      // errors={errors.price ? true : false}
+                      error={errors.price ? true : false}
                       onChange={onChange}
                       width={1}
                       />
@@ -84,6 +89,7 @@ function ProductForm() {
                         { key: 'New', text: 'New', value: 'New' },
                         { key: 'Used', text: 'Used', value: 'Used' },
                       ]}
+                      error={errors.condition ? true : false}
                       onChange={(_, { value }) => {
                         values.condition = value
                       }}
@@ -96,7 +102,7 @@ function ProductForm() {
                     name='description'
                     type='text'
                     value={values.description}
-                    // errors={errors.description ? true : false}
+                    error={errors.description ? true : false}
                     onChange={onChange}
                     />
                   <Form.Input
@@ -105,7 +111,7 @@ function ProductForm() {
                     name='images'
                     type='text'
                     value={values.images}
-                    // errors={errors.images ? true : false}
+                    error={errors.images ? true : false}
                     onChange={onChange}
                     />
                 <Button 
@@ -113,7 +119,7 @@ function ProductForm() {
                   color={user.color}
                   type='submit'
                   size='tiny'
-                  style={{marginTop: 15}} 
+                  style={{marginTop: 12}} 
                   loading={loading}>
                   List now
                 </Button>

@@ -29,7 +29,6 @@ module.exports = {
         const user = checkAuth(context)
         const post = await Post.findById(postId)
         const comment = post.comments.filter((comment) => comment.id.toString() === commentId)[0]
-        console.log(comment)
         if (comment.likes.find((like) => like.user.toString() === user.id)){
           comment.likes = comment.likes.filter((like) => like.user.toString() !== user.id)
         } else {

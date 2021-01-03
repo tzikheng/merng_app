@@ -13,9 +13,9 @@ module.exports = {
       }
     },
 
-    async getPost(_, { postId }){
+    async getPost(_, { parentId }){
       try{
-        const post = await Post.findById(postId)
+        const post = await Post.findById(parentId)
         if(post){
           return post;
         } else {

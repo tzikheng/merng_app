@@ -33,3 +33,32 @@ module.exports.validateLoginInput = (username, password) => {
     errors, valid: Object.keys(errors).length < 1
   }
 }
+
+module.exports.validateProductInput = (product_name, price, condition)=>{
+  const errors = {}
+  if(product_name.trim()===''){
+    errors.product_name='Listing title must not be empty'
+  }
+  if ( price===null || price==='' || !parseFloat(price)){
+    errors.price='Set price'
+  }
+  if(condition !== 'New' && condition !== 'Used'){
+    errors.condition='Select condition'
+  }
+  return {
+    errors, valid: Object.keys(errors).length < 1
+  }
+}
+
+module.exports.validateReviewInput = (rating, body)=>{
+  const errors = {}
+  if(body.trim()===''){
+    errors.body='Review must not be empty'
+  }
+  if(rating === 0){
+    errors.rating='Click on a star to rate the item'
+  }
+  return {
+    errors, valid: Object.keys(errors).length < 1
+  }
+}

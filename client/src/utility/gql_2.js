@@ -95,14 +95,14 @@ mutation likeProduct($productId: ID!){
 `
 
 const DELETE_PRODUCT_MUTATION = gql`
-mutation deleteProduct($productId: ID!){
-  deleteProduct(productId: $productId)
+mutation deleteProduct($parentId: ID!){
+  deleteProduct(parentId: $parentId)
 }
 `
 
 const CREATE_REVIEW_MUTATION = gql`
-mutation($productId: ID!, $body: String!){
-  createReview(productId: $productId, body: $body){
+mutation($productId: ID!, $rating:Int!, $body: String!){
+  createReview(productId: $productId, rating:$rating, body: $body){
     avgRating
     condition
     createdAt
@@ -136,8 +136,8 @@ mutation likeReview($productId: ID!, $reviewId: ID){
 `
 
 const DELETE_REVIEW_MUTATION = gql`
-mutation deleteReview($productId:ID!, $reviewId:ID!){
-  deleteReview(productId: $productId,reviewId: $reviewId){
+mutation deleteReview($parentId:ID!, $childId:ID!){
+  deleteReview(parentId: $parentId,childId: $childId){
     avgRating
     condition
     createdAt

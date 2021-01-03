@@ -2,6 +2,7 @@
 const { AuthenticationError, UserInputError } = require('apollo-server')
 const checkAuth = require('../../utility/check-auth.js')
 const Product = require('../../models/Product.js')
+const { validateProductInput } = require('../../utility/validators.js')
 
 module.exports = {
   Query:{
@@ -30,20 +31,25 @@ module.exports = {
 
   Mutation:{
     async createProduct(_, { product_name, description, condition, price, images}, context){
-      const user = checkAuth(context)
-      try{
-        const newProduct = new Product({
-          user: user.id,
-          product_name,
-          description,
-          condition,
-          price: parseFloat(price),
-          images: [images || 'https://react.semantic-ui.com/images/wireframe/white-image.png'], // TODO: image array
-          createdAt: new Date().toISOString()
-        })
-        const product = await newProduct.save()
-        return product
-      } catch(err) {console.log(err)}
+      const {errors, valid} = validateProductInput(product_name, price, condition)
+      if(!valid){
+        throw new UserInputError('Listing error',{errors})
+      } else {
+        const user = checkAuth(context)
+        try{
+          const newProduct = new Product({
+            user: user.id,
+            product_name,
+            description,
+            condition,
+            price: parseFloat(price),
+            images: [images || 'https://react.semantic-ui.com/images/wireframe/white-image.png'], // TODO: image array
+            createdAt: new Date().toISOString()
+          })
+          const product = await newProduct.save()
+          return product
+        } catch(err) {console.log(err)}
+      }
     },
 
     async likeProduct(_, { productId }, context) {
@@ -63,10 +69,10 @@ module.exports = {
       } else throw new UserInputError('Product not found');
     },
     
-    async deleteProduct(_, { productId }, context){
+    async deleteProduct(_, { parentId }, context){
       const user = checkAuth(context)
       try{
-        const product = await Product.findById(productId)
+        const product = await Product.findById(parentId)
         if(product.user.toString()===user.id){
           await product.delete()
           return 'Product deleted successfully'

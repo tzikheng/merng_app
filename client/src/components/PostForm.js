@@ -21,7 +21,7 @@ function PostForm() {
   });
   
   return (
-    <Card fluid color={color} style={{height: 180, width: 270, margin: 5}}>
+    <Card fluid color={color} style={{height: 160, width: 270, margin: 5}}>
       <Card.Content>
         {user ? (
           <>
@@ -33,7 +33,7 @@ function PostForm() {
                     name='body'
                     value = {postInput}
                     onChange={(event) => setPostInput(event.target.value)}
-                    style={{marginTop:22, marginBottom:16}}
+                    style={{marginTop:15, marginBottom:5}}
                     />
                 </Form.Field>
                 <button

@@ -29,28 +29,29 @@ function DeleteButton({ size='mini', float='right', type, parentId, childId, cal
     default:
       mutation = null
       query = null
-    }
+  }
 
-  const [_delete] = useMutation(mutation,{
+  const [_delete, { loading }] = useMutation(mutation,{
     variables: { parentId, childId },
     update(proxy){
       setConfirmOpen(false)
-
       if (!childId){
-        const data = proxy.readQuery({query})
-        if (data.posts){
-        const remainingPosts = data.posts.filter(post => post.id !== parentId )
-        proxy.writeQuery({ 
-          query,
-          data: {posts: remainingPosts}
-        })
-        } else if (data.products){
-          const remainingProducts = data.products.filter(product => product.id !== parentId )
+        try {
+          const data = proxy.readQuery({query})
+          if (data.posts){
+          const remainingPosts = data.posts.filter(post => post.id !== parentId )
           proxy.writeQuery({ 
             query,
-            data: {products: remainingProducts}
+            data: {posts: remainingPosts}
           })
-        }
+          } else if (data.products){
+            const remainingProducts = data.products.filter(product => product.id !== parentId )
+            proxy.writeQuery({ 
+              query,
+              data: {products: remainingProducts}
+            })
+          }
+        } catch(err) {}
       }
       if(callback) callback()
     }
@@ -62,9 +63,11 @@ function DeleteButton({ size='mini', float='right', type, parentId, childId, cal
       <Button basic
         as='div'
         color='red'
-        floated={float||null}
+        floated={float}
         onClick={()=>setConfirmOpen(true)}
-        size={size}>
+        size={size}
+        disabled={loading}
+        loading={loading}>
         <Icon name='trash' style={{margin:0}}/>
       </Button>
     }/>

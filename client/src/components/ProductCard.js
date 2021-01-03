@@ -1,14 +1,13 @@
-import { AuthContext } from '../context/auth'
-import moment from 'moment'
 import React, { useContext } from 'react'
-import { Card, Container, Image } from 'semantic-ui-react'
+import { Card, Header, Icon, Popup, Rating } from 'semantic-ui-react'
 import DeleteButton from '../components/DeleteButton'
-import CommentButton from './CommentButton'
+import { AuthContext } from '../context/auth'
 import LikeButton from './LikeButton'
+import UserAvatar from './UserAvatar'
+import { roundToX } from '../utility/functions'
 
 function ProductCard({product}){
   const { user } = useContext(AuthContext)
-
   const extra = (
     <>
     <LikeButton 
@@ -19,12 +18,6 @@ function ProductCard({product}){
         likeCount:product.likeCount, 
         likes:product.likes
       }}/>
-      <CommentButton 
-        color={product.user.color} 
-        commentCount={product.commentCount||0} 
-        popUp='Comments' 
-        redirect={`/products/${product.id}`}
-      />
       {user && user.id===product.user.id
         ? <DeleteButton type='product' float='right' parentId={product.id}/>
         : null
@@ -32,27 +25,55 @@ function ProductCard({product}){
     </>
   )
   // TODO: Make image a scrollable gallery
-
-  return(
+  
+  const productCard = (
     <Card
       fluid
       color={product.user.color} 
-      style={{height: 420, width: 240, margin: 5}}>
-      <Image src={product.images[0]} style={{objectFit:'contain', height:260}} centered rounded/>
-      <Card.Content>
-        <Card.Header>{product.product_name}</Card.Header>
-        <Card.Meta>
-          {`by ${product.user.username}, ${moment(product.createdAt).fromNow()}`}
-        </Card.Meta>
-        <Card.Description>
-          {product.description.length>50? product.description.substring(0,50)+'...':product.description}
-        </Card.Description>
+      className='productCard'
+      style={{
+        height: 420, 
+        width: 240, 
+        margin: 5,
+        backgroundColor: 'white'
+      }}
+      >
+      <UserAvatar item={product}/>
+        <a href={`/products/${product.id}`}>
+          <img
+            src={product.images[0]}
+            style={{objectFit:'contain', height:240, width: 240, backgroundColor:'white'}}
+          />
+        </a>
+      <Card.Content
+        href={`/products/${product.id}`}
+        style={{marginTop:0}}>
+        <Header size='small' style={{marginTop:-2, marginBottom:0}}>
+          {product.product_name}
+        </Header>
+        <Header size='tiny' style={{marginTop:2, marginBottom:0}}>
+          {`$${product.price}`}
+        </Header>
+        {product.reviewCount > 0 && (
+          <Popup inverted 
+            content={`${roundToX(product.avgRating,1)} stars based on ${product.reviewCount} review${product.reviewCount>1?`s`:``}`} 
+            trigger={
+          <div style={{display: 'flex', color:'black', marginBottom:-10, alignItems: 'center'}}>
+            <Rating defaultRating={product.avgRating} maxRating={5} disabled style={{marginRight:10}}/>
+            {product.reviewCount} 
+            <Icon 
+              name={product.reviewCount>1?'comments outline': 'comment outline'} 
+              style={{marginLeft:3}}/>
+          </div>
+          }/>
+        )}
       </Card.Content>
       <Card.Content extra>
         {extra}
       </Card.Content>
     </Card>
   )
+  return(productCard)
 }
 
 export default ProductCard;

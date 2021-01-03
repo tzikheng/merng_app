@@ -1,8 +1,6 @@
 .page-title{
   display: block !important;
   text-align: center;
-  font-size: 2rem;
-  margin-top: 10px;
 }
 
 .form-container{
@@ -12,14 +10,50 @@
 
 h2 {
   text-align:center;
-  
-}
-
-.ui.teal.button:focus,
-.ui.teal.buttons.button:focus{
-  background-color: #00b5ad;
 }
 
 .body {
-  font-size: 16
+  font-size: 16;
+}
+
+.vAlignDiv {
+  display: 'flex';
+  align-items: 'center';
+}
+
+.avatarContainer {
+  height: 40px;
+  width: 200px;
+}
+
+.avatarImage {
+  float: left;
+  height: 30px;
+  width: 30px;
+  margin: 5px;
+  border-radius: 5px;
+  object-fit:'contain';
+}
+
+.avatarUsername {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  padding-left: 8px;
+  margin-top: 2px;
+  margin-bottom: 0px;
+}
+
+.avatarCreatedAt {
+  font-size: 12px;
+  color: grey;
+  padding-left: 8px;
+  margin-top: -3px;
+}
+
+.productImage {
+  object-fit: contain;
+  max-height: 240;
+  max-width: 240;
+  background-color: white;
 }

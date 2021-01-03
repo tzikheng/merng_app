@@ -7,10 +7,15 @@ function NavBar(){
   const { user, logout } = useContext(AuthContext)
   const color = (user? (user.color || 'black') : 'black')
   const pathname = window.location.pathname
-  const path = pathname === '/' ? 'home' : pathname.substr(1)
+  let path 
+  if (pathname === '/' || pathname.includes('/posts/')){
+    path = 'home'
+  } else if (pathname.includes('/products/')){
+    path = 'marketplace'
+  } else {path = pathname.substr(1)} 
   const [activeItem, setActiveItem] = useState(path)
   useEffect(()=>{
-    setActiveItem(window.location.pathname === '/' ? 'home' : pathname.substr(1)) 
+    setActiveItem(path) 
   },[user, path, pathname])
   const handleItemClick = (e, { name }) => setActiveItem(name)
   

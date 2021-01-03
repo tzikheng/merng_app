@@ -15,10 +15,10 @@ function Marketplace() {
     return <p>{'Error encountered...'}</p>
   } else if(loading){
     return (
-      <Grid columns={5}>
-          <Grid.Row className='page-title'>
-            <h1>{'Loading...'}</h1>
-          </Grid.Row>
+      <Grid columns={3}>
+        <Grid.Row className='page-title'>
+          <h1>{'Loading...'}</h1>
+        </Grid.Row>
       </Grid>
     )
   } else {
@@ -28,7 +28,7 @@ function Marketplace() {
         <h1>{data.products ? 'Marketplace' : 'No listings yet'}</h1>
       </Grid.Row>
       <Grid.Row>
-      <Card.Group centered>
+      <Card.Group centered={true}>
         { user && (
         <Grid.Column>
           <ProductForm/>

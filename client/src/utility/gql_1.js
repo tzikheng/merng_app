@@ -103,8 +103,8 @@ mutation createPost($body: String!){
 `
 
 const GET_POST_QUERY = gql`
-query($postId: ID!){
-  getPost(postId: $postId){
+query($parentId: ID!){
+  getPost(parentId: $parentId){
     body
     commentCount
     comments{body createdAt id user{avatar color id username}}
