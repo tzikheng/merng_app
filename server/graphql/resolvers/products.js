@@ -1,4 +1,3 @@
-// FIXME: user attribute for product & review is written into mongodb but not being returned by gql ??
 const { AuthenticationError, UserInputError } = require('apollo-server')
 const checkAuth = require('../../utility/check-auth.js')
 const Product = require('../../models/Product.js')
@@ -44,7 +43,9 @@ module.exports = {
             condition,
             price: parseFloat(price),
             images: [images || 'https://react.semantic-ui.com/images/wireframe/white-image.png'], // TODO: image array
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            status : 'listed',
+            updatedAt: new Date().toISOString()
           })
           const product = await newProduct.save()
           return product

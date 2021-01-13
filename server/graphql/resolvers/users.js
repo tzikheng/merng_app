@@ -56,6 +56,7 @@ module.exports = {
           email,
           password,
           username,
+          cart: []
         })
         const res = await newUser.save() // to the DB
         const token = generateToken(res)
@@ -69,6 +70,7 @@ module.exports = {
           email: res.email,
           token: token,
           username: res.username,
+          cart: res.cart
         }
       }
     },
@@ -99,12 +101,13 @@ module.exports = {
         email: user.email,
         token: token,
         username: user.username,
+        cart: user.cart
       }
     },
 
     async updateSettings(_, {settingsInput:{avatar, bio, color, username}}, context){
       const this_user = checkAuth(context)
-      const user = await User.findById(this_user.id);
+      const user = await User.findById(this_user.id)
       if (!username || username.length===0){
         username=user.username
       } else {
@@ -122,7 +125,6 @@ module.exports = {
       user.color = color||user.color,
       user.username = username
       await user.save()
-
       const token = generateToken(user)
       return{
         ...user._doc,
@@ -134,6 +136,7 @@ module.exports = {
         email: user.email,
         token: token,
         username: user.username,
+        cart: user.cart
       }
     },
 

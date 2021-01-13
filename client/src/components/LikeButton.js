@@ -33,23 +33,40 @@ function LikeButton({color, type, size='mini', item: { id, likeCount, likes } })
       variables = null
     }
 
-  const [likeType] = useMutation(
+  const [likeType, { loading }] = useMutation(
     mutation,{
     variables,
   })
 
 const likeButton = user ? (
   liked ? (
-    <Button color={color} onClick={likeType} size={size}>
+    <Button 
+    disabled={loading}  
+    loading={loading} 
+      color={color} 
+      onClick={likeType} 
+      size={size}>
       <Icon name="heart" />
     </Button>
   ) : (
-    <Button color={color} basic onClick={likeType} size={size}>
+    <Button 
+    disabled={loading}  
+    loading={loading} 
+      color={color} basic 
+      onClick={likeType} 
+      size={size}>
       <Icon name="heart" />
     </Button>
   )
 ) : (
-  <Button color={color} basic as={Link} to="/login" size={size}>
+  <Button 
+    basic
+    disabled={loading}
+    loading={loading}
+    color={color} 
+    as={Link} 
+    to="/login"
+    size={size}>
     <Icon name="heart" />
   </Button>
 );
@@ -66,9 +83,15 @@ const popupContent = user ? (
 
 return (
   <Popup inverted content={popupContent} trigger={
-    <Button as="div" labelPosition="right" size={size}>
+    <Button 
+      as="div"
+      labelPosition="right"
+      size={size}>
       {likeButton}
-      <Label basic color={color} pointing="left">
+      <Label
+        basic
+        color={color}
+        pointing="left">
         {likeCount}
       </Label>
     </Button>

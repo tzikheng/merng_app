@@ -17,7 +17,7 @@ module.exports = {
       try{
         const post = await Post.findById(parentId)
         if(post){
-          return post;
+          return post
         } else {
           throw new Error('Post not found')
         }
@@ -40,20 +40,20 @@ module.exports = {
     },
 
     async likePost(_, { postId }, context) {
-      const user = checkAuth(context);
-      const post = await Post.findById(postId);
-      if (post) {
+      try {
+      const user = checkAuth(context)
+      const post = await Post.findById(postId)
         if (post.likes.find((like) => like.user.toString() === user.id)) {
-          post.likes = post.likes.filter((like) => like.user.toString() !== user.id);
+          post.likes = post.likes.filter((like) => like.user.toString() !== user.id)
         } else {
           post.likes.push({
             createdAt: new Date().toISOString(),
             user: user.id
-          });
+          })
         }
-        await post.save();
-        return post;
-      } else throw new UserInputError('Post not found');
+        await post.save()
+        return post
+      } catch(err) {console.log(err)}
     },
     
     async deletePost(_, { parentId }, context){

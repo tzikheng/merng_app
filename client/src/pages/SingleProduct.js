@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import moment from 'moment'
 import React, { useContext, useRef, useState } from 'react'
-import { Card, Form, Grid, Icon, Header, Label, Image, Rating, Transition } from 'semantic-ui-react'
-import CommentButton from '../components/CommentButton'
+import { withRouter } from 'react-router-dom'
+import { Card, Form, Grid, Header, Icon, Image, Label, Rating, Transition } from 'semantic-ui-react'
 import DeleteButton from '../components/DeleteButton'
 import LikeButton from '../components/LikeButton'
 import { AuthContext } from '../context/auth'
@@ -50,7 +50,7 @@ function SingleProduct(props){
       </Grid>
     )
   } else {
-    function deleteProductCallback(){props.history.push('/')}
+    function deleteProductCallback(){props.history.push('/marketplace')}
     let productMarkup
     const product = data.getProduct
     if(!product){
@@ -98,7 +98,7 @@ function SingleProduct(props){
                     type='product' 
                     size='tiny' 
                     parentId={product.id} 
-                    // callback={deleteProductCallback}
+                    callback={deleteProductCallback}
                     />
                   )}
                 </div>
@@ -195,4 +195,4 @@ function SingleProduct(props){
 }
 
 
-export default SingleProduct
+export default withRouter(SingleProduct)

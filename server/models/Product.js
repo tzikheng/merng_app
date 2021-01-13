@@ -8,6 +8,7 @@ const productSchema = new Schema({
   createdAt: String,
   updatedAt: String,
   price: Number,
+  status: String,
   user: {
     type: Schema.ObjectId,
     ref: 'users'

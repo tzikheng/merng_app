@@ -9,6 +9,7 @@ function ProductForm() {
   const { user } = useContext(AuthContext)
   const color = (user? (user.color || 'black') : 'black')
   const [errors, setErrors] = useState({})
+  const [tempCondition, setTempCondition] = useState('')
   const { onChange, onSubmit, values, setValues } = useForm(createProductCallback, {
     product_name:'',
     price:'',
@@ -19,7 +20,8 @@ function ProductForm() {
   const [createProduct, { loading }] = useMutation(CREATE_PRODUCT_MUTATION, {
     variables: values,
     onError(error){
-      error.graphQLErrors && setErrors(error.graphQLErrors[0].extensions.exception.errors)
+      try{setErrors(error.graphQLErrors[0].extensions.exception.errors)}
+      catch(err){console.log(err)}
     },
     update(proxy, result){
       const data = proxy.readQuery({query: GET_PRODUCTS_QUERY})
@@ -32,10 +34,12 @@ function ProductForm() {
       setValues({
         product_name:'',
         price:'',
+        condition:'',
         description:'',
         images:''
       })
-      this.setState({condition:null})
+      setErrors({})
+      setTempCondition('')
     }
   })
   function createProductCallback(){createProduct()}
@@ -79,7 +83,7 @@ function ProductForm() {
                       onChange={onChange}
                       width={1}
                       />
-                    <Form.Dropdown //FIXME: revert to null after submission
+                    <Form.Dropdown
                       label='Condition'
                       placeholder='New'
                       name='condition'
@@ -91,8 +95,10 @@ function ProductForm() {
                       ]}
                       error={errors.condition ? true : false}
                       onChange={(_, { value }) => {
+                        setTempCondition(value)
                         values.condition = value
                       }}
+                      value={tempCondition}
                       width={1}
                     />
                   </Form.Group>
@@ -114,12 +120,12 @@ function ProductForm() {
                     error={errors.images ? true : false}
                     onChange={onChange}
                     />
-                <Button 
-                  basic
+                <Button
                   color={user.color}
                   type='submit'
                   size='tiny'
                   style={{marginTop: 12}} 
+                  disabled={values.product_name.trim() === ''}
                   loading={loading}>
                   List now
                 </Button>

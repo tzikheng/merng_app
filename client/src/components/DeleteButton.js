@@ -60,7 +60,8 @@ function DeleteButton({ size='mini', float='right', type, parentId, childId, cal
   return(
     <>
     <Popup inverted content={`Delete ${type}`} trigger={
-      <Button basic
+      <Button 
+        basic
         as='div'
         color='red'
         floated={float}

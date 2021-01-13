@@ -4,6 +4,7 @@ import DeleteButton from '../components/DeleteButton'
 import { AuthContext } from '../context/auth'
 import LikeButton from './LikeButton'
 import UserAvatar from './UserAvatar'
+import AddToCartButton from './AddToCartButton'
 import { roundToX } from '../utility/functions'
 
 function ProductCard({product}){
@@ -20,7 +21,7 @@ function ProductCard({product}){
       }}/>
       {user && user.id===product.user.id
         ? <DeleteButton type='product' float='right' parentId={product.id}/>
-        : null
+        : <AddToCartButton color={product.user.color} float='right' productId={product.id} quantity={1}/>
       }
     </>
   )
@@ -76,4 +77,4 @@ function ProductCard({product}){
   return(productCard)
 }
 
-export default ProductCard;
+export default ProductCard

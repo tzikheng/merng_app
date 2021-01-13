@@ -3,6 +3,7 @@ const usersResolvers = require('./users')
 const commentsResolvers = require('./comments')
 const productsResolvers = require('./products')
 const reviewsResolvers = require('./reviews')
+const cartResolvers = require('./cart')
 const User = require('../../models/User.js')
 
 module.exports = {
@@ -68,6 +69,7 @@ module.exports = {
     ...commentsResolvers.Query,
     ...productsResolvers.Query,
     ...reviewsResolvers.Query,
+    ...cartResolvers.Query,
   },
   Mutation: {
     ...usersResolvers.Mutation,
@@ -75,6 +77,7 @@ module.exports = {
     ...commentsResolvers.Mutation,
     ...productsResolvers.Mutation,
     ...reviewsResolvers.Mutation,
+    ...cartResolvers.Mutation,
   },
   // TODO:
   // Subscription: {

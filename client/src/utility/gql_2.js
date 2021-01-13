@@ -101,8 +101,8 @@ mutation deleteProduct($parentId: ID!){
 `
 
 const CREATE_REVIEW_MUTATION = gql`
-mutation($productId: ID!, $rating:Int!, $body: String!){
-  createReview(productId: $productId, rating:$rating, body: $body){
+mutation($productId: ID!, $rating: Int!, $body: String!){
+  createReview(productId: $productId, rating: $rating, body: $body){
     avgRating
     condition
     createdAt
@@ -136,8 +136,8 @@ mutation likeReview($productId: ID!, $reviewId: ID){
 `
 
 const DELETE_REVIEW_MUTATION = gql`
-mutation deleteReview($parentId:ID!, $childId:ID!){
-  deleteReview(parentId: $parentId,childId: $childId){
+mutation deleteReview($parentId: ID!, $childId: ID!){
+  deleteReview(parentId: $parentId, childId: $childId){
     avgRating
     condition
     createdAt
@@ -156,6 +156,28 @@ mutation deleteReview($parentId:ID!, $childId:ID!){
 }
 `
 
+const ADD_TO_CART = gql`
+mutation addToCart($productId: ID!){
+  addToCart(productId: $productId){
+    cart{
+      productId
+      quantity
+    }
+  }
+}
+`
+
+const REMOVE_FROM_CART = gql`
+mutation removeFromCart($productId: ID!){
+  removeFromCart(productId: $productId){
+    cart{
+      productId
+      quantity
+    }
+  }
+}
+`
+
 export { 
   CREATE_PRODUCT_MUTATION, GET_PRODUCT_QUERY, GET_PRODUCTS_QUERY, LIKE_PRODUCT_MUTATION, DELETE_PRODUCT_MUTATION, 
-  CREATE_REVIEW_MUTATION, LIKE_REVIEW_MUTATION, DELETE_REVIEW_MUTATION}
+  CREATE_REVIEW_MUTATION, LIKE_REVIEW_MUTATION, DELETE_REVIEW_MUTATION, ADD_TO_CART, REMOVE_FROM_CART}

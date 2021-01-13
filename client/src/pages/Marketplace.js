@@ -29,20 +29,22 @@ function Marketplace() {
       </Grid.Row>
       <Grid.Row>
       <Card.Group centered={true}>
-        { user && (
-        <Grid.Column>
-          <ProductForm/>
-        </Grid.Column>
-        )}
-        {data.products && (
-          <Transition.Group>
-            {data.products.map((product)=>(
-              <Grid.Column key={product.id}>
-                <ProductCard product={product}/>
-              </Grid.Column>
+        <>
+          { user && (
+          <Grid.Column>
+            <ProductForm/>
+          </Grid.Column>
+          )}
+          {data.products && (
+            <Transition.Group>
+              {data.products.map((product)=>(
+                <Grid.Column key={product.id}>
+                  <ProductCard product={product}/>
+                </Grid.Column>
               ))}
             </Transition.Group>
-              )}
+          )}
+        </>
       </Card.Group>
       </Grid.Row>
     </Grid>

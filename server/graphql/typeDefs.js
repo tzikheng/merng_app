@@ -13,6 +13,12 @@ module.exports = gql`
     email: String!
     token: String!
     createdAt: String!
+    cart: [CartItem]
+  }
+  type CartItem{
+    id: ID!
+    productId: String!
+    quantity: Int!
   }
   type Post{
     id: ID!
@@ -51,7 +57,8 @@ module.exports = gql`
     likes: [Like]
     likeCount: Int!
     createdAt: String!
-    updatedAt: String
+    updatedAt: String!
+    status: String!
   }
   type Review{
     body: String!
@@ -71,6 +78,7 @@ module.exports = gql`
     posts: [Post]
     getProduct(productId: ID!): Product
     products: [Product]
+    getCart: [CartItem]
   }
 
   type Mutation{
@@ -104,6 +112,10 @@ module.exports = gql`
       body: String!): Product!
     likeReview(productId: ID!, reviewId: ID!): Review!
     deleteReview(parentId: ID!, childId: ID!): Product!
+
+    addToCart(productId: ID!): User
+    removeFromCart(productId: ID!): User
+    clearCart: String!
   }
   
   input registerInput{

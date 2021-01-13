@@ -44,6 +44,7 @@ function AuthProvider(props){
     dispatch({type: 'UPDATE', payload: userData})
   }
   function logout(){
+    localStorage.removeItem('cart')
     localStorage.removeItem('jwtToken')
     dispatch({type: 'LOGOUT'})
   }

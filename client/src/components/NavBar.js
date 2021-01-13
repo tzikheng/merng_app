@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, withRouter } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
-import { AuthContext } from '../context/auth';
+import { AuthContext } from '../context/auth'
 
 function NavBar(){
   const { user, logout } = useContext(AuthContext)
@@ -20,18 +20,18 @@ function NavBar(){
   const handleItemClick = (e, { name }) => setActiveItem(name)
   
   function logoutAndRedirect(){
-    setActiveItem('home')
+    setActiveItem(path)
     logout()
   }
 
-  const NavBar = user ? (
+  const NavBar = 
     <Menu 
       pointing 
       secondary 
       size='massive' 
       color={color}>
       <Menu.Item
-        name={user.username}
+        name={user ? user.username : 'home'}
         active={activeItem === 'home'}
         onClick={()=>{setActiveItem('home')}}
         as={Link}
@@ -45,57 +45,54 @@ function NavBar(){
         to='/marketplace'
       />
       <Menu.Menu position='right'>
-        <Menu.Item
-          name='profile'
-          active={activeItem === 'profile'}
-          onClick={handleItemClick}
-          as={Link}
-          to='/profile'
-        />
-        <Menu.Item
-          name='logout'
-          onClick={logoutAndRedirect}
-          as={Link}
-          to='/'
-        />
+        { user
+        ? (<>
+          <Menu.Item
+            name='profile'
+            active={activeItem === 'profile'}
+            onClick={handleItemClick}
+            as={Link}
+            to='/profile'
+          />
+          <Menu.Item
+            name='cart'
+            active={activeItem === 'cart'}
+            onClick={handleItemClick}
+            as={Link}
+            to='/cart'
+          />
+          <Menu.Item
+            name='logout'
+            onClick={logoutAndRedirect}
+          />
+          </>)
+        : (<>
+          <Menu.Item
+            name='login'
+            active={activeItem === 'login'}
+            onClick={handleItemClick}
+            as={Link}
+            to='/login'
+          />
+          <Menu.Item
+            name='register'
+            active={activeItem === 'register'}
+            onClick={handleItemClick}
+            as={Link}
+            to='/register'
+          />
+          <Menu.Item
+            name='cart'
+            active={activeItem === 'cart'}
+            onClick={handleItemClick}
+            as={Link}
+            to='/cart'
+          />
+          </>)  
+      }
       </Menu.Menu>
     </Menu>
-  ) : (
-    <Menu pointing secondary size='massive' color={color}>
-      <Menu.Item
-        name='home'
-        active={activeItem === 'home'}
-        onClick={handleItemClick}
-        as={Link}
-        to='/'
-      />
-      <Menu.Item
-        name='marketplace'
-        active={activeItem === 'marketplace'}
-        onClick={()=>{setActiveItem('marketplace')}}
-        as={Link}
-        to='/marketplace'
-      />
-      <Menu.Menu position='right'>
-        <Menu.Item
-          name='login'
-          active={activeItem === 'login'}
-          onClick={handleItemClick}
-          as={Link}
-          to='/login'
-        />
-        <Menu.Item
-          name='register'
-          active={activeItem === 'register'}
-          onClick={handleItemClick}
-          as={Link}
-          to='/register'
-        />
-      </Menu.Menu>
-    </Menu>
-  )
   return NavBar
 }
 
-
-export default NavBar;
+export default withRouter(NavBar)

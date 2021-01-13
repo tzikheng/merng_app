@@ -8,6 +8,12 @@ const userSchema = new Schema({
   email: String,
   password: String,
   username: String,
+  cart: [
+    {
+      productId: String,
+      quantity: Number
+    }
+  ],
 })
 
 module.exports = model('User', userSchema);

@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import moment from 'moment'
 import React, { useContext, useRef, useState } from 'react'
+import { withRouter } from 'react-router-dom'
 import { Card, Form, Grid, Image, Transition } from 'semantic-ui-react'
 import CommentButton from '../components/CommentButton'
 import DeleteButton from '../components/DeleteButton'
@@ -151,4 +152,4 @@ function SinglePost(props){
 }
 
 
-export default SinglePost
+export default withRouter(SinglePost)
