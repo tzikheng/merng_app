@@ -53,6 +53,10 @@ query($userId: ID!){
   getUser(userId: $userId){
     avatar
     bio
+    cart{
+      productId
+      quantity
+    }
     color
     id
     username
@@ -120,14 +124,14 @@ query($parentId: ID!){
 const GET_POSTS_QUERY = gql`
 {
   posts{
-  body
-  commentCount
-  comments{body createdAt id user{avatar color id username}}
-  createdAt
-  id
-  likeCount
-  likes{id createdAt user{id username}}
-  user{id username avatar color}
+    body
+    commentCount
+    comments{body createdAt id user{avatar color id username}}
+    createdAt
+    id
+    likeCount
+    likes{id createdAt user{id username}}
+    user{id username avatar color}
   }
 }
 `
@@ -185,4 +189,4 @@ mutation deleteComment($parentId:ID!, $childId:ID!){
 
 export { REGISTER_USER, LOGIN_USER, GET_USER_QUERY, UPDATE_SETTINGS,
   CREATE_POST_MUTATION, GET_POST_QUERY, GET_POSTS_QUERY, DELETE_POST_MUTATION, 
-  LIKE_POST_MUTATION, CREATE_COMMENT_MUTATION, DELETE_COMMENT_MUTATION}
+  LIKE_POST_MUTATION, CREATE_COMMENT_MUTATION, DELETE_COMMENT_MUTATION }

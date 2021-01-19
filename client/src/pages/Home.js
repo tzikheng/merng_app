@@ -7,12 +7,19 @@ import PostForm from '../components/PostForm.js'
 import { GET_POSTS_QUERY } from '../utility/gql_1.js'
 
 function Home() {
-  const { loading, error, data} = useQuery(GET_POSTS_QUERY)
+  const { loading, error, data } = useQuery(GET_POSTS_QUERY)
+  let homeMarkup
   if(error){
     console.log(error)
-    return <p>{'Error encountered...'}</p>
+    homeMarkup = (
+      <Grid columns={4}>
+          <Grid.Row className='page-title'>
+            <h1>{'Loading...'}</h1>
+          </Grid.Row>
+      </Grid>
+    )
   } else if(loading){
-    return (
+    homeMarkup = (
       <Grid columns={4}>
           <Grid.Row className='page-title'>
             <h1>{'Loading...'}</h1>
@@ -20,7 +27,7 @@ function Home() {
       </Grid>
     )
   } else {
-      return (
+    homeMarkup = (
       <Grid>
         <Grid.Row className='page-title'>
           <h1>{data.posts ? 'Recent posts' : 'No posts yet'}</h1>
@@ -42,8 +49,9 @@ function Home() {
         </Card.Group>
         </Grid.Row>
       </Grid>
-      )
+    )
   }
+  return homeMarkup
 }
 
 export default withRouter(Home)

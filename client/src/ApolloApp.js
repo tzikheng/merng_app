@@ -5,20 +5,12 @@ import { setContext } from 'apollo-link-context'
 import { createHttpLink } from 'apollo-link-http'
 import React from 'react'
 import { Provider } from 'react-redux'
-import { applyMiddleware, createStore } from 'redux'
-import { load, save } from 'redux-localstorage-simple'
 import App from './App.js'
-import allReducers from './utility/reducers'
+import store from './Store'
 
-const createStoreWithMiddleware = applyMiddleware(
-  save() // Saving done here
-)(createStore)
-
-const store = createStoreWithMiddleware(
-  allReducers,    
-  load(), // Loading done here
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)    
+store.subscribe(()=>{
+  // console.log('Store changed')
+})
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:5000'

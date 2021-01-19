@@ -34,15 +34,19 @@ function SingleProduct(props){
   const handleRate = (e, { rating }) => {
     setRating(parseInt(rating))
   }
+  function deleteProductCallback(){
+    props.history.push('/market')
+  }
+  let productMarkup
 
   const { loading, error, data } = useQuery(GET_PRODUCT_QUERY, {
     variables: { productId }
   })
   if(error){
     console.log(error)
-    return <p>{'Error encountered...'}</p>
+    productMarkup = <p>{'Error encountered...'}</p>
   } else if(loading){
-    return (
+    productMarkup = (
       <Grid columns={3}>
           <Grid.Row className='page-title'>
             <h1>{'Loading...'}</h1>
@@ -50,11 +54,9 @@ function SingleProduct(props){
       </Grid>
     )
   } else {
-    function deleteProductCallback(){props.history.push('/marketplace')}
-    let productMarkup
     const product = data.getProduct
     if(!product){
-      productMarkup = <p>Product not found... </p>
+      productMarkup = <p>{'Product not found...'}</p>
     } else {
       productMarkup = (
         <Grid centered>
@@ -189,9 +191,9 @@ function SingleProduct(props){
           </Grid.Row>
         </Grid>
       )
-      return productMarkup
     }
   }
+  return productMarkup
 }
 
 

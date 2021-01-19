@@ -12,9 +12,9 @@ function LikeButton({color, type, size='mini', item: { id, likeCount, likes } })
 
   useEffect(() => {
     if (user && likes.find((like) => like.user.id === user.id)) {
-      setLiked(true);
-    } else setLiked(false);
-  }, [user, likes]);
+      setLiked(true)
+    } else setLiked(false)
+  }, [user, likes])
   
   let mutation 
   let variables
@@ -61,15 +61,13 @@ const likeButton = user ? (
 ) : (
   <Button 
     basic
-    disabled={loading}
-    loading={loading}
     color={color} 
     as={Link} 
     to="/login"
     size={size}>
     <Icon name="heart" />
   </Button>
-);
+)
 
 const popupContent = user ? (
   liked ? ( 
@@ -96,7 +94,7 @@ return (
       </Label>
     </Button>
   }/>
-);
+)
 }
 
 export default LikeButton

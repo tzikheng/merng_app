@@ -6,9 +6,10 @@ import { Container } from 'semantic-ui-react'
 import './App.css'
 import NavBar from './components/NavBar'
 import { AuthProvider } from './context/auth.js'
+import Cart from './pages/Cart'
 import Home from './pages/Home'
 import Login from './pages/Login'
-import Marketplace from './pages/Marketplace'
+import Market from './pages/Market'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
 import SinglePost from './pages/SinglePost'
@@ -24,10 +25,11 @@ function App(){
         <Container textAlign='left'>
           <NavBar/>
           <Route exact path='/' component={Home}/>
-          <Route exact path='/marketplace' component={Marketplace}/>
-          <AuthRoute exact path='/login' component={Login}/>
-          <AuthRoute exact path='/register' component={Register}/>
-          <Route exact path='/profile' component={Profile}/>
+          <Route exact path='/market' component={Market}/>
+          <Route exact path='/login' component={Login}/>
+          <Route exact path='/register' component={Register}/>
+          <AuthRoute exact path='/profile' component={Profile}/>
+          <AuthRoute exact path='/cart' component={Cart}/>
           <Route exact path='/posts/:postId' component={SinglePost}/>
           <Route exact path='/products/:productId' component={SingleProduct}/>
         </Container>

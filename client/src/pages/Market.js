@@ -4,28 +4,35 @@ import React, { useContext } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Card, Grid, Transition } from 'semantic-ui-react'
 import ProductCard from '../components/ProductCard.js'
-import ProductForm from '../components/ProductForm.js' // TODO:
+import ProductForm from '../components/ProductForm.js'
 import { GET_PRODUCTS_QUERY } from '../utility/gql_2.js'
 
-function Marketplace() {
+function Market() {
   const { user } = useContext(AuthContext)
   const { loading, error, data} = useQuery(GET_PRODUCTS_QUERY)
+  let marketMarkup
   if(error){
     console.log(error)
-    return <p>{'Error encountered...'}</p>
+    marketMarkup = (
+      <Grid columns={4}>
+          <Grid.Row className='page-title'>
+            <h1>{'Loading...'}</h1>
+          </Grid.Row>
+      </Grid>
+    )
   } else if(loading){
-    return (
-      <Grid columns={3}>
+    marketMarkup = (
+      <Grid columns={4}>
         <Grid.Row className='page-title'>
           <h1>{'Loading...'}</h1>
         </Grid.Row>
       </Grid>
     )
   } else {
-    return (
+    marketMarkup = (
     <Grid>
       <Grid.Row className='page-title'>
-        <h1>{data.products ? 'Marketplace' : 'No listings yet'}</h1>
+        <h1>{data.products ? 'Market' : 'No listings yet'}</h1>
       </Grid.Row>
       <Grid.Row>
       <Card.Group centered={true}>
@@ -50,6 +57,7 @@ function Marketplace() {
     </Grid>
     )
   }
+  return marketMarkup
 }
 
-export default withRouter(Marketplace)
+export default withRouter(Market)

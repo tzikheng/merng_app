@@ -55,20 +55,20 @@ query($productId: ID!){
 const GET_PRODUCTS_QUERY = gql`
 {
   products{
-  avgRating
-  condition
-  createdAt
-  description
-  id
-  likeCount
-  likes{id createdAt user{id username}}
-  images
-  price
-  product_name
-  reviewCount
-  reviews{rating body createdAt id user{avatar color id username}}
-  updatedAt
-  user{id username avatar color}
+    avgRating
+    condition
+    createdAt
+    description
+    id
+    likeCount
+    likes{id createdAt user{id username}}
+    images
+    price
+    product_name
+    reviewCount
+    reviews{rating body createdAt id user{avatar color id username}}
+    updatedAt
+    user{id username avatar color}
   }
 }
 `
@@ -178,6 +178,29 @@ mutation removeFromCart($productId: ID!){
 }
 `
 
+const UPDATE_CART = gql`
+mutation updateCart($productId: ID!, $quantity: Int!){
+  updateCart(productId: $productId, quantity: $quantity){
+    cart{
+      productId
+      quantity
+    }
+  }
+}
+`
+
+const GET_CART = gql`
+{
+  getCart{
+    cart{
+      productId
+      quantity
+      price
+    }
+  }
+}
+`
+
 export { 
   CREATE_PRODUCT_MUTATION, GET_PRODUCT_QUERY, GET_PRODUCTS_QUERY, LIKE_PRODUCT_MUTATION, DELETE_PRODUCT_MUTATION, 
-  CREATE_REVIEW_MUTATION, LIKE_REVIEW_MUTATION, DELETE_REVIEW_MUTATION, ADD_TO_CART, REMOVE_FROM_CART}
+  CREATE_REVIEW_MUTATION, LIKE_REVIEW_MUTATION, DELETE_REVIEW_MUTATION, ADD_TO_CART, REMOVE_FROM_CART, UPDATE_CART, GET_CART}

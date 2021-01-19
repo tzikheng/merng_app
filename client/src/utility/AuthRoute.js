@@ -8,8 +8,9 @@ function AuthRoute({ component: Component, ...rest}){
   return (
     <Route
       {...rest}
-      render = {(props) => 
-        user ? <Redirect to = '/'/> : <Component {...props}/>
+      render = {(props) => user 
+        ? <Component {...props}/>
+        : <Redirect to = {{ pathname: '/', state: { from: props.location }}} />
       }
     />
   )

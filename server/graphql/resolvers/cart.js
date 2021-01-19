@@ -4,38 +4,39 @@ const checkAuth = require('../../utility/check-auth.js')
 
 module.exports = {
   Query:{
-    async getCart(context){
+    async getCart(_, __, context){
       try{
-        const user = checkAuth(context)
+        const this_user = checkAuth(context)
+        const user = await User.findById(this_user.id)
         return user
-      } catch(err){console.log(err)}
+      } catch(err){
+        throw new Error(err)
+      }
     }
   },
 
   Mutation:{
     async addToCart(_, { productId }, context){
-      console.log('addToCart called')
       try {
         const this_user = checkAuth(context)
         const user = await User.findById(this_user.id)
+        const product = await Product.findById(productId)
         let cartItem = user.cart.find(cartItem => cartItem.productId === productId)
         if (cartItem) {
           cartItem.quantity+=1
         } else {
           user.cart.push({
             productId,
-            quantity: 1
-          }) // FIXME: error adding product to cart
+            quantity: 1,
+            price: product.price
+          })
         }
         await user.save()
-        console.log(user.cart)
-        // return user
+        return user
       } catch(err) {console.log(err)}
     },
 
     async removeFromCart(_, { productId }, context){
-      console.log('removeFromCart called')
-      console.log(productId)
       try {
         const this_user = checkAuth(context)
         const user = await User.findById(this_user.id)
@@ -46,7 +47,17 @@ module.exports = {
           cartItem.quantity -= 1
         }
         await user.save()
-        console.log(user.cart)
+        return user
+      } catch(err) {console.log(err)}
+    },
+
+    async updateCart(_, { productId, quantity }, context){
+      try {
+        const this_user = checkAuth(context)
+        const user = await User.findById(this_user.id)
+        let cartItem = user.cart.find(cartItem => cartItem.productId === productId)
+        cartItem.quantity = quantity
+        await user.save()
         return user
       } catch(err) {console.log(err)}
     },

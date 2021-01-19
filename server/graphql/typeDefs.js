@@ -19,6 +19,7 @@ module.exports = gql`
     id: ID!
     productId: String!
     quantity: Int!
+    price: Float!
   }
   type Post{
     id: ID!
@@ -78,7 +79,7 @@ module.exports = gql`
     posts: [Post]
     getProduct(productId: ID!): Product
     products: [Product]
-    getCart: [CartItem]
+    getCart: User
   }
 
   type Mutation{
@@ -115,6 +116,7 @@ module.exports = gql`
 
     addToCart(productId: ID!): User
     removeFromCart(productId: ID!): User
+    updateCart(productId: ID!, quantity: Int!): User
     clearCart: String!
   }
   

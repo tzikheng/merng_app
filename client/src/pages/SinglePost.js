@@ -25,25 +25,37 @@ function SinglePost(props){
   const { loading, error, data } = useQuery(GET_POST_QUERY, {
     variables: { parentId: postId }
   })
+  let singlePostMarkup
   if(error){
     console.log(error)
-    return <p>{'Error encountered...'}</p>
+    singlePostMarkup = (
+      <Grid columns={4}>
+          <Grid.Row className='page-title'>
+            <h1>{'Loading...'}</h1>
+          </Grid.Row>
+      </Grid>
+    )
   } else if(loading){
-    return (
-      <Grid columns={3}>
+    singlePostMarkup = (
+      <Grid columns={4}>
           <Grid.Row className='page-title'>
             <h1>{'Loading...'}</h1>
           </Grid.Row>
       </Grid>
     )
   } else {  
-    let postMarkup;
     const post = data.getPost
     if(!post){
-      postMarkup = <p>Post not found... </p>
+      singlePostMarkup = (
+        <Grid columns={4}>
+            <Grid.Row className='page-title'>
+              <h1>{'Post not found...'}</h1>
+            </Grid.Row>
+        </Grid>
+      )
     } else {
       function deletePostCallback(){props.history.push('/')}
-      postMarkup = (
+      singlePostMarkup = (
         <Grid centered>
           <Grid.Row>
 
@@ -146,8 +158,8 @@ function SinglePost(props){
           </Grid.Row>
         </Grid>
       )
-      return postMarkup
     }
+    return singlePostMarkup
   }
 }
 

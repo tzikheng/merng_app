@@ -25,7 +25,7 @@ function Login(props) {
   })
   function loginUserCallback(){loginUser()}
   
-  return (
+  const loginForm = (
     <div className='form-container'>
       <h1>Login</h1>
       <Form onSubmit={onSubmit} noValidate className={loading ? 'loading':''}> 
@@ -63,6 +63,7 @@ function Login(props) {
       )}
     </div>
   )
+  return loginForm
 }
 
 export default withRouter(Login)

@@ -60,7 +60,7 @@ function Profile(props) {
     }
     //onClick={fn} will invoke fn by default, will require definition: function fn(e){e.preventDefault()...}
     
-    const settingsForm = (
+    const profileForm = (
       <div className='form-container'>
         <h1>{'Profile & settings'}</h1>
         <Form onSubmit={onSubmit} noValidate> 
@@ -116,7 +116,7 @@ function Profile(props) {
         </Form>
       </div>
     )
-    return settingsForm
+    return profileForm
   }
 // }
 

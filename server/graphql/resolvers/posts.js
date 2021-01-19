@@ -9,7 +9,8 @@ module.exports = {
         const posts = await Post.find().sort({ createdAt: -1 })
         return posts
       } catch(err){
-        throw new Error(err)
+        // throw new Error(err)
+        console.log(err)
       }
     },
 
@@ -21,9 +22,7 @@ module.exports = {
         } else {
           throw new Error('Post not found')
         }
-      } catch(err){
-        throw new Error(err)
-      }
+      } catch(err){console.log(err)}
     }
   },
 
@@ -66,18 +65,14 @@ module.exports = {
         } else {
           throw new AuthenticationError('Action not allowed')
         }
-      } catch(err) {
-        throw new Error(err)
-      }
+      } catch(err) {console.log(err)}
     },
 
     async deleteAllPosts(){
       try{
         await Post.deleteMany({})
         return 'Posts deleted'
-      } catch(err) {
-        throw new Error(err)
-      }
+      } catch(err) {console.log(err)}
     }
   }
     // , Subscription: {

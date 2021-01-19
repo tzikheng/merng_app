@@ -6,7 +6,9 @@ const initialState = {user: null}
 if(localStorage.getItem('jwtToken')){
   const decodedToken = jwtDecode(localStorage.getItem('jwtToken'))
   if(decodedToken.exp * 1000 < Date.now()){
+    localStorage.removeItem('cart')
     localStorage.removeItem('jwtToken')
+    localStorage.removeItem('redux_localstorage_simple')
   } else {
     initialState.user = decodedToken;
   }
@@ -46,6 +48,7 @@ function AuthProvider(props){
   function logout(){
     localStorage.removeItem('cart')
     localStorage.removeItem('jwtToken')
+    localStorage.removeItem('redux_localstorage_simple')
     dispatch({type: 'LOGOUT'})
   }
 

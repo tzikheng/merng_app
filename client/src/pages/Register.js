@@ -28,7 +28,7 @@ function Register(props) {
   })
   function addUserCallback(){addUser()}
   
-  return (
+  const registerMarkup = (
     <div className='form-container'>
       <h1>Register</h1>
       <Form onSubmit={onSubmit} noValidate className={loading ? 'loading':''}> 
@@ -84,6 +84,7 @@ function Register(props) {
       )}
     </div>
   )
+  return registerMarkup
 }
 
 export default withRouter(Register)
