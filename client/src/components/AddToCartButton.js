@@ -7,12 +7,12 @@ import { AuthContext } from '../context/auth'
 import { addToCart, removeFromCart } from '../utility/actions'
 import { ADD_TO_CART, REMOVE_FROM_CART } from '../utility/gql_2.js'
 
-function AddToCartButton({ size='mini', float='right', productId}){
+function AddToCartButton({ size='mini', float='right', productId, price}){
   const { user } = useContext(AuthContext)
   const color = (user ? user.color : 'black')
   const reduxCart = useSelector(state => state.cart)
   const dispatch = useDispatch()
-  const [ inCart, setInCart ] = useState(reduxCart[productId])
+  const [ inCart, setInCart ] = useState(reduxCart[productId] ?reduxCart[productId][1]>0 :false)
 
   const [addToUserCart, { loading: addToUserCart_loading }] = useMutation(ADD_TO_CART,{
     variables: { productId }
@@ -21,7 +21,7 @@ function AddToCartButton({ size='mini', float='right', productId}){
     variables: { productId }
   })
   function addToCartHandle(){
-    dispatch(addToCart(productId))
+    dispatch(addToCart(productId, price))
     if(user){addToUserCart()}
     setInCart(true)
   }

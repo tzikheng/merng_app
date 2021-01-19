@@ -8,10 +8,6 @@ import { Provider } from 'react-redux'
 import App from './App.js'
 import store from './Store'
 
-store.subscribe(()=>{
-  // console.log('Store changed')
-})
-
 const httpLink = createHttpLink({
   uri: 'http://localhost:5000'
   // uri: 'https://tk-app-1.herokuapp.com/'
@@ -22,7 +18,7 @@ const authLink = setContext(()=>{
   return {
     headers: {Authorization: token ? `Bearer ${token}`:''}
   }
-}) // TODO: gets the token once and passes it on
+})
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),

@@ -7,6 +7,7 @@ import DeleteButton from '../components/DeleteButton'
 import LikeButton from '../components/LikeButton'
 import { AuthContext } from '../context/auth'
 import { CREATE_REVIEW_MUTATION, GET_PRODUCT_QUERY } from '../utility/gql_2.js'
+import AddToCartButton from '../components/AddToCartButton'
 
 function SingleProduct(props){
   const { user } = useContext(AuthContext)
@@ -85,31 +86,30 @@ function SingleProduct(props){
                 <Header size='small' style={{marginTop:10, marginBottom:10}}>{product.description}</Header>
 
                 <div style={{marginTop:10, marginBottom:20}}>
+                  <>
                   <LikeButton 
                     color={color} 
                     type='product'
                     size='tiny'
+                    float='left'
                     item={{
                       id:product.id, 
                       likeCount:product.likeCount, 
                       likes:product.likes
                     }}
                     />
-                  {user && user.id === product.user.id && (
-                    <DeleteButton 
-                    type='product' 
-                    size='tiny' 
-                    parentId={product.id} 
-                    callback={deleteProductCallback}
-                    />
-                  )}
+                  {user && user.id===product.user.id
+                      ? <DeleteButton type='product' size='tiny' float='right' parentId={product.id} callback={deleteProductCallback}/>
+                      : <AddToCartButton color={color} size='tiny' float='right' productId={product.id} price={product.price} quantity={1}/>
+                    }
+                  </>
                 </div>
 
                 {(user && user.id !== product.user.id 
                   && !product.reviews.find((review) => review.user.id === user.id)) &&
                   <Card 
                     fluid
-                    color={user.color}>
+                    color={color}>
                     <Card.Content>
                       <Card.Header size='small'>
                         {`Leave a review`}
@@ -157,7 +157,7 @@ function SingleProduct(props){
                     {product.reviews.map((review) => (
                       <Card 
                         fluid 
-                        color={review.user.color}
+                        color={color}
                         key={review.id}>
                         <Card.Content>
                           <Image

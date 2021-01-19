@@ -21,7 +21,7 @@ function ProductCard({product}){
       }}/>
       {user && user.id===product.user.id
         ? <DeleteButton type='product' float='right' parentId={product.id}/>
-        : <AddToCartButton color={color} float='right' productId={product.id} quantity={1}/>
+        : <AddToCartButton color={color} float='right' productId={product.id} price={product.price} quantity={1}/>
       }
     </>
   )

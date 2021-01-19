@@ -3,11 +3,21 @@ function roundToX(num, X) {
   return +(Math.round(num + "e+"+X)  + "e-"+X);
 }
 
-function dictToArray(dict){
+function dictToArray(obj){
   let array = []
-  for (const [key,value] of Object.entries(dict)) {
+  for (const [key,value] of Object.entries(obj)) {
     if (value > 0) {
       array.push({'productId':key, 'quantity':value})
+    }
+  }
+  return array
+}
+
+function keyValueArray(obj){
+  let array = []
+  for (const [key,value] of Object.entries(obj)) {
+    if (value[1] > 0) {
+      array.push({'productId':key, 'price':value[0], 'quantity':value[1]})
     }
   }
   return array
@@ -29,4 +39,4 @@ function fnTotalPrice(cart){
   return sum
 }
 
-export { roundToX, dictToArray, fnNumItems, fnTotalPrice }
+export { roundToX, dictToArray, keyValueArray, fnNumItems, fnTotalPrice }

@@ -12,32 +12,32 @@ import { GET_PRODUCT_QUERY, UPDATE_CART } from '../utility/gql_2.js'
 function CartItemCard({color, cartItem: {productId}}) {
   const reduxCart = useSelector(state => state.cart)
   const [ itemInfo, setItemInfo ] = useState({})
-  const [ userQuantity, setUserQuantity ] = useState()
-  const [ feQuantity, setFeQuantity ] = useState(reduxCart[productId]) // uses redux store to update quantity
-  const [ beQuantity, setBeQuantity ] = useState(reduxCart[productId])
+  const [ feQuantity, setFeQuantity ] = useState(reduxCart[productId][1]) // uses redux store to update quantity
+  const [ beQuantity, setBeQuantity ] = useState(reduxCart[productId][1])
   const dispatch = useDispatch()
+  
   const { loading: getItemLoading, _, data: itemData } = useQuery(GET_PRODUCT_QUERY, {
     variables: { productId },
-    onError(error){
-      console.log(error)
-    }
+    onError(error){console.log(error)}
   })
   const [ updateUserCart, { loading: updateCartLoading, data: cartData } ] = useMutation(UPDATE_CART, {
-    variables: { productId, quantity: feQuantity }
+    variables: { productId, quantity: feQuantity },
+    onCompleted(){
+      setBeQuantity([beQuantity[0], feQuantity])
+    }
   })
   useEffect(() => {
     if(!getItemLoading && itemData){
       setItemInfo(itemData.getProduct)
     }
-    if(!updateCartLoading && cartData){
-      let cartItem = cartData.updateCart.cart.find((cartItem)=>cartItem.productId === productId)
-      setUserQuantity(cartItem.quantity)
-    }
+    // if(!updateCartLoading && cartData){
+    //   let cartItem = cartData.updateCart.cart.find((cartItem)=>cartItem.productId === productId)
+    //   setBeQuantity([cartItem.quantity])
+    // }
   }, [getItemLoading, itemData, updateCartLoading, cartData])
   function updateCartHandle(){
     dispatch(updateCart(productId, feQuantity))
     updateUserCart(productId, feQuantity)
-    setBeQuantity(feQuantity)
   }
   
   let cartItemMarkup 
@@ -55,7 +55,7 @@ function CartItemCard({color, cartItem: {productId}}) {
         </Item>
       </Item.Group>
     )
-  } else if (userQuantity === 0 || beQuantity === 0) {
+  } else if (beQuantity === 0) {
     return null
   } else if (itemInfo !== {}) {
     cartItemMarkup = (
