@@ -7,7 +7,7 @@ import { reduxLogout } from '../utility/actions'
 
 function NavBar(){
   const { user, logout } = useContext(AuthContext)
-  const color = (user? (user.color || 'black') : 'black')
+  const color = (user ? user.color : 'black')
   const pathname = window.location.pathname
   const dispatch = useDispatch()
   const reduxCart = useSelector(state => state.cart)

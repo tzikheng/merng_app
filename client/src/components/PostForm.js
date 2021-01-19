@@ -6,7 +6,7 @@ import { AuthContext } from '../context/auth.js'
 
 function PostForm() {
   const { user } = useContext(AuthContext)
-  const color = (user? (user.color || 'black') : 'black')
+  const color = (user ? user.color : 'black')
   const [postInput, setPostInput] = useState('');
   const [createPost, { loading }] = useMutation(CREATE_POST_MUTATION, {
     variables: {body:postInput},

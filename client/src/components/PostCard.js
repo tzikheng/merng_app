@@ -8,11 +8,12 @@ import UserAvatar from './UserAvatar'
 
 function PostCard({post}){
   const { user } = useContext(AuthContext)
-  
+  const color = (user ? user.color : 'black')
+
   const postCard = (
     <Card 
       fluid 
-      color={post.user.color} 
+      color={color} 
       style={{height: 160, width: 270, margin: 5}}>
       <UserAvatar item={post}/>
       <Card.Content href={`/posts/${post.id}`}>
@@ -24,7 +25,6 @@ function PostCard({post}){
       </Card.Content>
       <Card.Content extra>
         <LikeButton 
-          color={post.user.color} 
           type='post'
           item={{
             id:post.id, 
@@ -33,7 +33,7 @@ function PostCard({post}){
           }}
         />
         <CommentButton 
-          color={post.user.color} 
+          color={color} 
           commentCount={post.commentCount} 
           popUp='Comments' 
           redirect={`/posts/${post.id}`}

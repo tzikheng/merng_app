@@ -9,10 +9,10 @@ import { roundToX } from '../utility/functions'
 
 function ProductCard({product}){
   const { user } = useContext(AuthContext)
+  const color = (user ? user.color : 'black')
   const extra = (
     <>
     <LikeButton 
-      color={product.user.color} 
       type='product'
       item={{
         id:product.id, 
@@ -21,7 +21,7 @@ function ProductCard({product}){
       }}/>
       {user && user.id===product.user.id
         ? <DeleteButton type='product' float='right' parentId={product.id}/>
-        : <AddToCartButton color={product.user.color} float='right' productId={product.id} quantity={1}/>
+        : <AddToCartButton color={color} float='right' productId={product.id} quantity={1}/>
       }
     </>
   )
@@ -30,7 +30,7 @@ function ProductCard({product}){
   const productCard = (
     <Card
       fluid
-      color={product.user.color} 
+      color={color} 
       className='productCard'
       style={{
         height: 420, 

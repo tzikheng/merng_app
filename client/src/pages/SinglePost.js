@@ -11,8 +11,8 @@ import { CREATE_COMMENT_MUTATION, GET_POST_QUERY } from '../utility/gql_1.js'
 
 function SinglePost(props){
   const { user } = useContext(AuthContext)
+  const color = (user ? user.color : 'black')
   const postId = props.match.params.postId;
-  const color = (user? (user.color || 'black') : 'black')
   const commentInputRef = useRef(null);
   const [comment, setComment] = useState('');
   const [createComment, { loading: creatingComment }] = useMutation(CREATE_COMMENT_MUTATION, {
@@ -159,8 +159,8 @@ function SinglePost(props){
         </Grid>
       )
     }
-    return singlePostMarkup
   }
+  return singlePostMarkup
 }
 
 

@@ -7,8 +7,9 @@ import { AuthContext } from '../context/auth'
 import { addToCart, removeFromCart } from '../utility/actions'
 import { ADD_TO_CART, REMOVE_FROM_CART } from '../utility/gql_2.js'
 
-function AddToCartButton({ color='black', size='mini', float='right', productId}){
+function AddToCartButton({ size='mini', float='right', productId}){
   const { user } = useContext(AuthContext)
+  const color = (user ? user.color : 'black')
   const reduxCart = useSelector(state => state.cart)
   const dispatch = useDispatch()
   const [ inCart, setInCart ] = useState(reduxCart[productId])

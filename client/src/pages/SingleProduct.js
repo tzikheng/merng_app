@@ -10,7 +10,7 @@ import { CREATE_REVIEW_MUTATION, GET_PRODUCT_QUERY } from '../utility/gql_2.js'
 
 function SingleProduct(props){
   const { user } = useContext(AuthContext)
-  const color = (user? (user.color || 'black') : 'black')
+  const color = (user ? user.color : 'black')
   const productId = props.match.params.productId
   const reviewInputRef = useRef(null)
   const [errors, setErrors] = useState({})

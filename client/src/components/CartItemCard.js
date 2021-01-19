@@ -9,7 +9,7 @@ import { GET_PRODUCT_QUERY, UPDATE_CART } from '../utility/gql_2.js'
 // Redux state -> display cart & cart items
 // Update change -> change redux state -> update storage -> update userQuantity -> if 0, return null
 
-function CartItemCard({cartItem: {productId}}) {
+function CartItemCard({color, cartItem: {productId}}) {
   const reduxCart = useSelector(state => state.cart)
   const [ itemInfo, setItemInfo ] = useState({})
   const [ userQuantity, setUserQuantity ] = useState()
@@ -75,6 +75,8 @@ function CartItemCard({cartItem: {productId}}) {
             <Grid centered>
               <Grid.Row verticalAlign='middle'>
                 <Button 
+                  basic
+                  color={color}
                   size='mini' 
                   icon='minus'
                   onClick={()=>setFeQuantity(feQuantity-1)}
@@ -88,17 +90,21 @@ function CartItemCard({cartItem: {productId}}) {
                   }/>
                 </Grid.Column>
                 <Button 
+                  basic
+                  color={color}
                   size='mini' 
                   icon='plus'
                   onClick={()=>setFeQuantity(feQuantity+1)}
                   disabled={updateCartLoading}/>
                 <Popup 
                   inverted
-                  content={feQuantity===0? 'Remove item' : 'Update quantity'}
+                  content={feQuantity===0?'Remove item' :'Update quantity'}
                   trigger={
                     <Button 
+                      basic
+                      color={color}
                       size='mini'
-                      icon={feQuantity===0? 'trash' : 'check'}
+                      icon={feQuantity===0?'trash' :'check'}
                       onClick={updateCartHandle}
                       loading={updateCartLoading}
                       disabled={updateCartLoading}/>

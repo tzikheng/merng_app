@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Icon, Label, Popup } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
-function CommentButton({color, size='mini', commentCount, popUp, onClickFunction, redirect}){
+function CommentButton({color='black', size='mini', commentCount, popUp, onClickFunction, redirect}){
   return (
     <>
     <Popup inverted content={popUp} trigger={

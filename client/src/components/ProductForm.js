@@ -7,7 +7,7 @@ import { useForm } from '../utility/hooks'
 
 function ProductForm() {
   const { user } = useContext(AuthContext)
-  const color = (user? (user.color || 'black') : 'black')
+  const color = (user ? user.color : 'black')
   const [errors, setErrors] = useState({})
   const [tempCondition, setTempCondition] = useState('')
   const { onChange, onSubmit, values, setValues } = useForm(createProductCallback, {
@@ -121,7 +121,7 @@ function ProductForm() {
                     onChange={onChange}
                     />
                 <Button
-                  color={user.color}
+                  color={color}
                   type='submit'
                   size='tiny'
                   style={{marginTop: 12}} 

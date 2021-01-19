@@ -1,15 +1,18 @@
 import { useQuery } from '@apollo/react-hooks'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { isMobile } from "react-device-detect"
 import { useSelector } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Button, Grid, Transition } from 'semantic-ui-react'
 import CartItemCard from '../components/CartItemCard.js'
+import { AuthContext } from '../context/auth'
 import { dictToArray, fnNumItems, fnTotalPrice } from '../utility/functions'
 import { GET_CART } from '../utility/gql_2.js'
 // FIXME: useQuer(GET_CART) not re-running upon page reload
 
 function Cart() {
+  const { user } = useContext(AuthContext)
+  const color = (user ? user.color : 'black')
   let reduxCartObject = useSelector(state => state.cart) || {}
   const [userCart, setUserCart] = useState()
   const [reduxCart, setReduxCart] = useState(dictToArray(reduxCartObject))
@@ -62,19 +65,16 @@ function Cart() {
                     {userCart.map((cartItem)=>(
                       cartItem.quantity === 0 
                       ? null
-                      : <CartItemCard cartItem={cartItem} key={cartItem.productId}/>
+                      : <CartItemCard color={color} cartItem={cartItem} key={cartItem.productId}/>
                     ))}
                   </Transition.Group>
                 )}
             </Grid.Column>
             <Grid.Column width={4} style={{textAlign:'right', marginTop:50}}>
               <h4 style={{marginTop:10}}>{`Total no. items: ${numItems}`}</h4>
-              {totalPrice >= 20
-                ? <h4 style={{marginTop:10}}>Free shipping</h4>
-                : <h4 style={{marginTop:10}}>Shipping: $5</h4>
-              }
+              <h4 style={{marginTop:10}}>Free shipping!</h4>
               <h3 style={{marginTop:10}}>{`Your total: $${totalPrice}`}</h3>
-              <Button size='tiny' disabled>Checkout</Button>
+              <Button color={color} size='tiny' disabled>Checkout</Button>
             </Grid.Column>
         </Grid>
         )

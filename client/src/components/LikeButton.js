@@ -6,9 +6,10 @@ import { LIKE_POST_MUTATION } from '../utility/gql_1.js'
 import { AuthContext } from '../context/auth'
 import { LIKE_PRODUCT_MUTATION } from '../utility/gql_2.js'
 
-function LikeButton({color, type, size='mini', item: { id, likeCount, likes } }){
+function LikeButton({type, size='mini', item: { id, likeCount, likes } }){
   const [liked, setLiked] = useState(false)
   const { user } = useContext(AuthContext)
+  const color = (user ? user.color : 'black')
 
   useEffect(() => {
     if (user && likes.find((like) => like.user.id === user.id)) {
