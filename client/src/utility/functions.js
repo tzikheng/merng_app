@@ -36,7 +36,7 @@ function fnTotalPrice(cart){
   cart.map((cartItem)=>(
     sum += cartItem.quantity * cartItem.price
   ))
-  return sum
+  return roundToX(sum, 2)
 }
 
 export { roundToX, dictToArray, keyValueArray, fnNumItems, fnTotalPrice }

@@ -40,12 +40,7 @@ module.exports = {
       try {
         const this_user = checkAuth(context)
         const user = await User.findById(this_user.id)
-        let cartItem = user.cart.find(cartItem => cartItem.productId === productId)
-        if (cartItem.quantity === 1){
-          user.cart = user.cart.filter((cartItem) => cartItem.productId !== productId)
-        } else {
-          cartItem.quantity -= 1
-        }
+        user.cart = user.cart.filter((cartItem) => cartItem.productId !== productId)
         await user.save()
         return user
       } catch(err) {console.log(err)}

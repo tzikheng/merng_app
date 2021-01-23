@@ -5,38 +5,33 @@ import { Button, Divider, Grid, Image, Item, Popup } from 'semantic-ui-react'
 import { updateCart } from '../utility/actions'
 import { GET_PRODUCT_QUERY, UPDATE_CART } from '../utility/gql_2.js'
 
-// FIXME: this is a disaster
-// Redux state -> display cart & cart items
-// Update change -> change redux state -> update storage -> update userQuantity -> if 0, return null
-
 function CartItemCard({color, cartItem: {productId}}) {
   const reduxCart = useSelector(state => state.cart)
   const [ itemInfo, setItemInfo ] = useState({})
-  const [ feQuantity, setFeQuantity ] = useState(reduxCart[productId][1]) // uses redux store to update quantity
-  const [ beQuantity, setBeQuantity ] = useState(reduxCart[productId][1])
+  const [ feQuantity, setFeQuantity ] = useState(reduxCart[productId] && reduxCart[productId][1])
+  const [ beQuantity, setBeQuantity ] = useState(reduxCart[productId] && reduxCart[productId][1])
   const dispatch = useDispatch()
-  
+
   const { loading: getItemLoading, _, data: itemData } = useQuery(GET_PRODUCT_QUERY, {
     variables: { productId },
-    onError(error){console.log(error)}
+    onError(error){
+      console.log(error)
+      setFeQuantity(beQuantity)
+    }
   })
   const [ updateUserCart, { loading: updateCartLoading, data: cartData } ] = useMutation(UPDATE_CART, {
     variables: { productId, quantity: feQuantity },
     onCompleted(){
-      setBeQuantity([beQuantity[0], feQuantity])
+      dispatch(updateCart(productId, feQuantity))
+      setBeQuantity(feQuantity)
     }
   })
   useEffect(() => {
     if(!getItemLoading && itemData){
       setItemInfo(itemData.getProduct)
     }
-    // if(!updateCartLoading && cartData){
-    //   let cartItem = cartData.updateCart.cart.find((cartItem)=>cartItem.productId === productId)
-    //   setBeQuantity([cartItem.quantity])
-    // }
   }, [getItemLoading, itemData, updateCartLoading, cartData])
   function updateCartHandle(){
-    dispatch(updateCart(productId, feQuantity))
     updateUserCart(productId, feQuantity)
   }
   
@@ -85,6 +80,7 @@ function CartItemCard({color, cartItem: {productId}}) {
                 <Popup 
                   inverted
                   content={'Quantity'} 
+                  position='top center'
                   trigger={
                     <h3 style={{textAlign:'center'}}>{feQuantity}</h3>
                   }/>
@@ -99,6 +95,7 @@ function CartItemCard({color, cartItem: {productId}}) {
                 <Popup 
                   inverted
                   content={feQuantity===0?'Remove item' :'Update quantity'}
+                  position='top center'
                   trigger={
                     <Button 
                       basic
@@ -107,7 +104,7 @@ function CartItemCard({color, cartItem: {productId}}) {
                       icon={feQuantity===0?'trash' :'check'}
                       onClick={updateCartHandle}
                       loading={updateCartLoading}
-                      disabled={updateCartLoading}/>
+                      disabled={updateCartLoading || (feQuantity === beQuantity)}/>
                   }/>
               </Grid.Row>
             </Grid>
