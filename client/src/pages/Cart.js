@@ -34,55 +34,82 @@ function Cart() {
       }
     })
   })
-
   let cartMarkup
 
-  if(isMobile){
-    return <h2>{`Mobile content not available yet!`}</h2>
-  } else {
-    if (numItems===0) {
-      cartMarkup = (
-        <Grid columns={4}>
-            <Grid.Row className='page-title'>
-              <h1>{'Your cart is empty'}</h1>
-            </Grid.Row>
-        </Grid>
-      )
-    } else {
-      cartMarkup = (
+  if (numItems===0) {
+    cartMarkup = (
+      <Grid columns={4}>
+          <Grid.Row className='page-title'>
+            <h1>{'Your cart is empty'}</h1>
+          </Grid.Row>
+      </Grid>
+    ) 
+  } else if(isMobile || window.innerWidth < 800){
+    // return <h2>{`Mobile content not available yet!`}</h2>
+    cartMarkup = (
       <Grid centered>
         <Grid.Row className='page-title'>
           <h1>{'Your cart'}</h1>
         </Grid.Row>
         <Grid.Row/>
-          <Grid.Column width={8}>
+          <Grid.Column width={10} style={{textAlign:'center'}}>
               {reduxCart && (
                 <Transition.Group>
                   {reduxCart.map((cartItem)=>(
                     cartItem.quantity === 0 
                     ? null
-                    : <CartItemCard color={color} cartItem={cartItem} key={cartItem.productId}/>
+                    : <CartItemCard color={color} shortened={true} cartItem={cartItem} key={cartItem.productId}/>
                   ))}
                 </Transition.Group>
               )}
-          </Grid.Column>
-          <Grid.Column width={4} style={{textAlign:'right'}}>
-            <>
-              <h4 style={{marginTop:5}}>{`Total number of items: ${numItems}`}</h4>
-              <h4 style={{marginTop:5}}>{`Free shipping!`}</h4>
-              <h3 style={{marginTop:5}}>{`Your total: $${totalPrice}`}</h3>
-              <Popup 
-                inverted
-                content={'Work in progress'} 
-                position='bottom right'
-                trigger={
-                  <Button color={color} size='tiny'>{`Checkout`}</Button>
-              }/>
-            </>
+            <Grid.Row/>
+            <h4 style={{marginTop:5}}>{`Total number of items: ${numItems}`}</h4>
+            <h4 style={{marginTop:5}}>{`Free shipping!`}</h4>
+            <h4 style={{marginTop:5}}>{`Your total: $${totalPrice}`}</h4>
+            <Popup 
+              inverted
+              content={'Work in progress'} 
+              position='bottom right'
+              trigger={
+                <Button color={color} size='tiny'>{`Checkout`}</Button>
+            }/>
           </Grid.Column>
       </Grid>
       )
-    }
+  } else {
+    cartMarkup = (
+    <Grid centered>
+      <Grid.Row className='page-title'>
+        <h1>{'Your cart'}</h1>
+      </Grid.Row>
+      <Grid.Row/>
+        <Grid.Column width={8}>
+            {reduxCart && (
+              <Transition.Group>
+                {reduxCart.map((cartItem)=>(
+                  cartItem.quantity === 0 
+                  ? null
+                  : <CartItemCard color={color} shortened={false} cartItem={cartItem} key={cartItem.productId}/>
+                ))}
+              </Transition.Group>
+            )}
+        </Grid.Column>
+        <Grid.Column width={4} style={{textAlign:'right'}}>
+          <>
+            <h4 style={{marginTop:5}}>{`Total number of items: ${numItems}`}</h4>
+            <h4 style={{marginTop:5}}>{`Free shipping!`}</h4>
+            <h3 style={{marginTop:5}}>{`Your total: $${totalPrice}`}</h3>
+            <Popup 
+              inverted
+              content={'Work in progress'} 
+              position='bottom right'
+              trigger={
+                <Button color={color} size='tiny'>{`Checkout`}</Button>
+            }/>
+          </>
+        </Grid.Column>
+    </Grid>
+    )
   }
   return cartMarkup
 }

@@ -1,8 +1,10 @@
 import { useMutation } from '@apollo/react-hooks'
 import React, { useContext, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Button, Form } from 'semantic-ui-react'
 import { AuthContext } from '../context/auth'
+import { reduxLogin } from '../utility/actions'
 import { LOGIN_USER } from '../utility/gql_1.js'
 import { useForm } from '../utility/hooks'
 
@@ -13,13 +15,19 @@ function Login(props) {
     username: '',
     password: ''
   })
+  const dispatch = useDispatch()
   const [loginUser, { loading }] = useMutation(LOGIN_USER,{
     variables: values,
     onError(error){
-      setErrors(error.graphQLErrors[0].extensions.exception.errors)
+      try{setErrors(error.graphQLErrors[0].extensions.exception.errors)}
+      catch(err){console.log(err)}
     },
     onCompleted(data){
       context.login(data.login)
+      let cart = data.login.cart
+      try {
+        dispatch(reduxLogin(cart))
+      } catch(err) {console.log(err)}
       props.history.push('/')
     }
   })

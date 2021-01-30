@@ -17,9 +17,20 @@ const cartReducer = (state={}, action) => {
       return state
 
     case 'updateCart':
-      state[action.productId][1] = action.quantity
+      if (state[action.productId]) {
+        state[action.productId][1] = action.quantity
+      }
+      else {
+        state[action.productId] = [action.price, action.quantity]
+      }
       return state
 
+    case 'reduxLogin':
+      action.cart.forEach((cartItem) => {
+        state[cartItem['productId']] = [cartItem['price'], cartItem['quantity']]
+      })
+      return state 
+      
     case 'reduxLogout':
       state = {}
       return state 

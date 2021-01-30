@@ -9,7 +9,7 @@ const { validateRegisterInput, validateLoginInput } = require('../../utility/val
 
 function generateToken(user){
   return jwt.sign(
-    {id: user.id, avatar: user.avatar, bio: user.bio, color: user.color, username: user.username}, // removed email: user.email
+    {id: user.id, avatar: user.avatar, bio: user.bio, color: user.color, username: user.username},
     SECRET_KEY, 
     { expiresIn: '7d'})
 }
@@ -34,7 +34,7 @@ module.exports = {
     }
   },
   Mutation: {
-    async register(_, {registerInput:{username, email, password, confirmPassword}}){ // inputs: parent, args, context, info
+    async register(_, {registerInput:{username, email, password, confirmPassword}}){
       // Validate user data
       const {valid, errors } = validateRegisterInput(username, email, password, confirmPassword)
       if(!valid){
@@ -58,10 +58,10 @@ module.exports = {
           username,
           cart: []
         })
-        const res = await newUser.save() // to the DB
+        const res = await newUser.save()
         const token = generateToken(res)
         return{
-          ...res._doc, // where the document is stored ??
+          ...res._doc,
           id: res._id,
           avatar: res.avatar,
           bio: res.bio,
@@ -75,7 +75,7 @@ module.exports = {
       }
     },
 
-    async login(_, {username, password}){ // no need to destructure them from type
+    async login(_, {username, password}){
       const {errors, valid} = validateLoginInput(username,password)
       if(!valid){
         throw new UserInputError('Wrong credentials',{errors})
@@ -92,7 +92,7 @@ module.exports = {
       }
       const token = generateToken(user)
       return{
-        ...user._doc, // where the document is stored ??
+        ...user._doc,
         id: user._id,
         avatar: user.avatar,
         bio: user.bio,

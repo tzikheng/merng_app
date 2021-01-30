@@ -50,7 +50,7 @@ function ProductCard({product}){
         href={`/products/${product.id}`}
         style={{marginTop:0}}>
         <Header size='small' style={{marginTop:-2, marginBottom:0}}>
-          {product.product_name}
+          {product.product_name.length > 20 ?product.product_name.substring(0,20)+'...' :product.product_name}
         </Header>
         <Header size='tiny' style={{marginTop:2, marginBottom:0}}>
           {`$${product.price}`}

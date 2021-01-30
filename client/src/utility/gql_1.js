@@ -39,6 +39,11 @@ mutation login(
       avatar
       bio
       color
+      cart{
+        productId
+        price
+        quantity
+      }
       createdAt
       email
       id

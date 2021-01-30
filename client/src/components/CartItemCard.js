@@ -5,7 +5,7 @@ import { Button, Divider, Grid, Image, Item, Popup } from 'semantic-ui-react'
 import { updateCart } from '../utility/actions'
 import { GET_PRODUCT_QUERY, UPDATE_CART } from '../utility/gql_2.js'
 
-function CartItemCard({color, cartItem: {productId}}) {
+function CartItemCard({color, shortened=false, cartItem: {productId}}) {
   const reduxCart = useSelector(state => state.cart)
   const [ itemInfo, setItemInfo ] = useState({})
   const [ feQuantity, setFeQuantity ] = useState(reduxCart[productId] && reduxCart[productId][1])
@@ -22,7 +22,7 @@ function CartItemCard({color, cartItem: {productId}}) {
   const [ updateUserCart, { loading: updateCartLoading, data: cartData } ] = useMutation(UPDATE_CART, {
     variables: { productId, quantity: feQuantity },
     onCompleted(){
-      dispatch(updateCart(productId, feQuantity))
+      dispatch(updateCart({productId, quantity:feQuantity}))
       setBeQuantity(feQuantity)
     }
   })
@@ -60,29 +60,45 @@ function CartItemCard({color, cartItem: {productId}}) {
           <Grid.Column width={3}>
             <Image src={itemInfo.images}/>
           </Grid.Column>
-          <Grid.Column width={6}>
-            <h3 style={{textAlign:'left', margin:0}}>{itemInfo.product_name}</h3>
-            <h4 style={{textAlign:'left', margin:0}}>{`$${itemInfo.price}`}</h4>
+          <Grid.Column width={7}>
+            {shortened
+              ? <h4 style={{textAlign:'left', margin:0}}>
+                  {itemInfo.product_name && itemInfo.product_name.length > 20 ?itemInfo.product_name.substring(0,20)+'...' :itemInfo.product_name}
+                </h4>
+              : <h3 style={{textAlign:'left', margin:0}}>
+                {itemInfo.product_name && itemInfo.product_name.length > 20 ?itemInfo.product_name.substring(0,20)+'...' :itemInfo.product_name}
+                </h3>
+            }
+            {shortened
+              ? <h5 style={{textAlign:'left', margin:0}}>
+                  {`$${itemInfo.price}`}
+                </h5>
+              : <h4 style={{textAlign:'left', margin:0}}>
+                  {`$${itemInfo.price}`}
+                </h4>
+            }
             <p style={{textAlign:'left', margin:0, fontSize:12, color:'grey'}}>{itemInfo.condition}</p>
             {itemInfo.user && <p style={{textAlign:'left', margin:0, fontSize:12, color:'grey'}}>{`Listed by ${itemInfo.user.username}`}</p>}
           </Grid.Column>
-          <Grid.Column width={6}>
+          <Grid.Column width={5}>
             <Grid centered>
               <Grid.Row verticalAlign='middle'>
                 <Button 
                   basic
                   color={color}
-                  size='mini' 
+                  size='mini'
                   icon='minus'
                   onClick={()=>setFeQuantity(feQuantity-1)}
                   disabled={updateCartLoading || feQuantity===0}/>
                 <Grid.Column width={4}>
-                <Popup 
+                <Popup
                   inverted
                   content={'Quantity'} 
                   position='top center'
                   trigger={
-                    <h3 style={{textAlign:'center'}}>{feQuantity}</h3>
+                    shortened
+                    ? <h4>{feQuantity}</h4>
+                    : <h3>{feQuantity}</h3>
                   }/>
                 </Grid.Column>
                 <Button 
@@ -94,14 +110,14 @@ function CartItemCard({color, cartItem: {productId}}) {
                   disabled={updateCartLoading}/>
                 <Popup 
                   inverted
-                  content={feQuantity===0?'Remove item' :'Update quantity'}
+                  content={feQuantity===0 ?'Remove item' :'Update quantity'}
                   position='top center'
                   trigger={
                     <Button 
                       basic
                       color={color}
                       size='mini'
-                      icon={feQuantity===0?'trash' :'check'}
+                      icon={feQuantity===0 ?'trash' :'check'}
                       onClick={updateCartHandle}
                       loading={updateCartLoading}
                       disabled={updateCartLoading || (feQuantity === beQuantity)}/>

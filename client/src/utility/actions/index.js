@@ -13,11 +13,19 @@ export const removeFromCart = (productId) => {
   }
 }
 
-export const updateCart = (productId, quantity) => {
+export const updateCart = (productId, price, quantity) => {
   return {
     type: 'updateCart',
     productId,
+    price,
     quantity
+  }
+}
+
+export const reduxLogin = (cart) => {
+  return {
+    type: 'reduxLogin',
+    cart
   }
 }
 

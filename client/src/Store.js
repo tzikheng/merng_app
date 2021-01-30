@@ -10,7 +10,7 @@ const createStoreWithMiddleware = applyMiddleware(
 
 const Store = createStoreWithMiddleware(
   allReducers,    
-  load(), // Loading done here
+  load(), // To load user.cart upon login
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 

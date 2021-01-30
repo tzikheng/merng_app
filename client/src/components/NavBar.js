@@ -29,7 +29,7 @@ function NavBar(){
     } else {
       setActiveItem(path)
     }
-    // dispatch(reduxLogout)
+    dispatch(reduxLogout())
     logout()
   }
 
